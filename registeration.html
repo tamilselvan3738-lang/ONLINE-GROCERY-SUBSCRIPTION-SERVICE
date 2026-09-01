@@ -1,0 +1,639 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>SproutSub - Register Account</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons for UI elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Master Responsive Stylesheet -->
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <script>
+    // Tailwind Config Customization
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#10b981', // Emerald primary
+              600: '#059669', // Darker emerald
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            carrot: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdbb74',
+              400: '#f97316', // Orange secondary
+              500: '#ea580c',
+              600: '#ca8a04',
+            },
+            darkbg: {
+              DEFAULT: '#090d16',
+              navbar: '#0f172a',
+              card: '#1e293b',
+            }
+          },
+        }
+      }
+    }
+  </script>
+  <style type="text/css">
+    /* ==================== CORE RESPONSIVE ARCHITECTURE & RESET ==================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    html {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      min-width: 320px;
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.4s ease, color 0.3s ease;
+    }
+
+    /* Guaranteed Sticky Header Navigation */
+    header, .sticky-navbar {
+      position: -webkit-sticky !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 50 !important;
+      width: 100% !important;
+      overflow: visible !important;
+    }
+
+    /* Prevent Media & Visual Out-of-Bounds */
+    img, svg, video, canvas, audio, iframe, embed, object {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Section & Container Fluidity */
+    main, section, footer, article, aside {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Content & Text Word Wrapping Containment */
+    p, h1, h2, h3, h4, h5, h6, span, a, li, button, label, input, textarea, blockquote {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+
+    pre, code, kbd {
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: 100%;
+    }
+
+    /* Ensure Tables & Data Grids Scroll Safely on Mobile */
+    .table-responsive, .overflow-x-auto {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      display: block;
+    }
+    table {
+      max-width: 100%;
+    }
+
+    /* Buttons & Interactive Elements Fluid Sizing */
+    button, input, select, textarea, .btn, a.btn-pulse {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #059669;
+    }
+
+    /* Animated Custom Underline Link Effect */
+    .nav-link-custom {
+      position: relative;
+    }
+    .nav-link-custom::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 50%;
+      background-color: #10b981;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(-50%);
+    }
+    .dark .nav-link-custom::after {
+      background-color: #34d399;
+    }
+    .nav-link-custom:hover::after {
+      width: 100%;
+    }
+
+    /* Logo Custom SVG Animations */
+    .logo-group:hover .logo-sprout {
+      animation: sproutScaleWiggle 0.7s ease-in-out infinite alternate;
+      transform-origin: 20px 24px;
+    }
+    .logo-group:hover .logo-loop {
+      animation: loopSpin 2.5s linear infinite;
+      transform-origin: 24px 24px;
+    }
+
+    @keyframes sproutScaleWiggle {
+      0% {
+        transform: rotate(-8deg) scale(0.95);
+      }
+      100% {
+        transform: rotate(12deg) scale(1.15);
+      }
+    }
+
+    @keyframes loopSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Active Sidebar Nav Item styling */
+    .sidebar-active, .admin-sidebar-active {
+      background-color: #10b981 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+    .dark .sidebar-active, .dark .admin-sidebar-active {
+      background-color: #059669 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    }
+
+    /* Dropdown Menus Animations (Desktop) */
+    @media (min-width: 1280px) {
+      .dropdown-menu {
+        opacity: 0;
+        transform: translateY(12px) scale(0.95);
+        visibility: hidden;
+        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+      }
+      .dropdown-group:hover .dropdown-menu {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        visibility: visible;
+      }
+    }
+
+    /* Login Button Pulsing Ripple */
+    .btn-pulse {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-pulse::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease-out, height 0.6s ease-out;
+    }
+    .btn-pulse:hover::before {
+      width: 250%;
+      height: 250%;
+    }
+
+    /* RTL Dynamic Transformations & Symmetry */
+    [dir="rtl"] .rtl-flip {
+      transform: scaleX(-1) !important;
+    }
+    [dir="rtl"] i[class*="fa-arrow-left"],
+    [dir="rtl"] i[class*="fa-arrow-right"],
+    [dir="rtl"] i[class*="fa-chevron-left"],
+    [dir="rtl"] i[class*="fa-chevron-right"],
+    [dir="rtl"] i[class*="fa-right-to-bracket"],
+    [dir="rtl"] i[class*="fa-right-from-bracket"] {
+      transform: scaleX(-1);
+    }
+
+    /* Mobile Side Menu Transition */
+    .mobile-menu-drawer {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ==================== CLEAN RESPONSIVE BREAKPOINT SYSTEM ==================== */
+    
+    /* 1. Large Tablets & Small Laptops (max-width: 1024px) */
+    @media screen and (max-width: 1024px) {
+      .hero-title {
+        font-size: clamp(2rem, 4.5vw, 3rem);
+        line-height: 1.15;
+      }
+      .section-heading {
+        font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+        line-height: 1.2;
+      }
+      .section-py {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+      }
+    }
+
+    /* 2. Tablets & Medium Screens (max-width: 768px) */
+    @media screen and (max-width: 768px) {
+      .hero-title {
+        font-size: clamp(1.75rem, 5.5vw, 2.25rem);
+        line-height: 1.18;
+      }
+      .section-heading {
+        font-size: clamp(1.4rem, 4.5vw, 1.85rem);
+        line-height: 1.25;
+      }
+      .section-py {
+        padding-top: 2.75rem;
+        padding-bottom: 2.75rem;
+      }
+      .responsive-stack-md {
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .responsive-grid-md {
+        grid-template-columns: 1fr !important;
+      }
+      .card-pad-md {
+        padding: 1.25rem !important;
+      }
+    }
+
+    /* 3. Small & Medium Mobile Phones (max-width: 480px) */
+    @media screen and (max-width: 480px) {
+      .hero-title {
+        font-size: clamp(1.5rem, 7vw, 1.85rem) !important;
+        line-height: 1.22 !important;
+      }
+      .hero-subtitle {
+        font-size: 0.9rem !important;
+        line-height: 1.45 !important;
+      }
+      .section-heading {
+        font-size: clamp(1.25rem, 6vw, 1.5rem) !important;
+        line-height: 1.25 !important;
+      }
+      .section-py {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+      }
+      .hero-btn-group, .cta-group, .btn-group-mobile {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0.75rem !important;
+      }
+      .hero-btn-group a, .hero-btn-group button,
+      .cta-group a, .cta-group button,
+      .btn-group-mobile a, .btn-group-mobile button {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+      .card-compact {
+        padding: 1rem !important;
+      }
+      .gap-responsive {
+        gap: 0.875rem !important;
+      }
+      .mobile-hide-decor {
+        display: none !important;
+      }
+      .mobile-full-width {
+        width: 100% !important;
+      }
+      .floating-badge-mobile {
+        position: static !important;
+        margin-top: 0.75rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        transform: none !important;
+      }
+      .bg-blob-decor {
+        width: 260px !important;
+        height: 260px !important;
+        max-width: 90vw !important;
+        max-height: 90vw !important;
+      }
+    }
+
+    /* 4. Extra Small Phones (max-width: 320px) */
+    @media screen and (max-width: 320px) {
+      html, body {
+        font-size: 14px;
+      }
+      .hero-title {
+        font-size: 1.35rem !important;
+        line-height: 1.2 !important;
+      }
+      .section-heading {
+        font-size: 1.18rem !important;
+        line-height: 1.25 !important;
+      }
+      .px-4, .sm\:px-6, .lg\:px-8 {
+        padding-left: 0.625rem !important;
+        padding-right: 0.625rem !important;
+      }
+      .logo-group svg {
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+      }
+      .logo-group span:first-of-type {
+        font-size: 1.1rem !important;
+      }
+      .btn, button, a.btn-pulse {
+        font-size: 0.8125rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+      .card-ultra-compact {
+        padding: 0.75rem !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#fcfdfc] text-slate-800 dark:bg-darkbg dark:text-slate-100 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- Floating Utilities (Top Right) -->
+  <div class="absolute top-4 right-4 rtl:right-auto rtl:left-4 z-50 flex items-center gap-2">
+    <button id="theme-toggle" class="w-8 h-8 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-center text-slate-605 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none" aria-label="Toggle theme">
+      <i class="fa-solid fa-sun text-xs dark:hidden"></i>
+      <i class="fa-solid fa-moon text-xs hidden dark:block"></i>
+    </button>
+    <button id="rtl-toggle" class="w-8 h-8 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-center text-slate-605 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none" aria-label="Toggle layout direction">
+      <i class="fa-solid fa-right-left text-xs"></i>
+    </button>
+  </div>
+
+  <!-- ==================== MAIN WORKSPACE ==================== -->
+  <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-3 flex flex-col items-center justify-center transition-colors duration-350">
+    
+    <!-- Sign In & Registration Container -->
+    <div class="w-full max-w-5xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 shadow-2xl rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2 min-h-[420px] transition-all">
+      
+      <!-- LEFT COLUMN: Forms -->
+      <div class="p-5 sm:p-6 flex flex-col justify-center gap-3 text-left rtl:text-right">
+        
+        <!-- FORM: REGISTER -->
+        <form onsubmit="handleAuth(event)" class="space-y-3 flex-grow flex flex-col justify-center">
+          
+          <!-- Logo Brand -->
+          <div class="mb-3 flex items-center justify-center text-center">
+            <a href="index.html" class="logo-group flex items-center gap-3 focus:outline-none" aria-label="SproutSub Home">
+              <svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="logo-loop stroke-brand-500 dark:stroke-brand-400" d="M24 6C14.0589 6 6 14.0589 6 24C6 27.6 7.05 31 8.85 33.85L5 37.7L9.3 37.7L11.55 35.45C14.85 39.55 19.1 42 24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6Z" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 10; 4 2"/>
+                <path class="logo-loop stroke-carrot-400" d="M38 16.5C39.3 18.75 40 21.3 40 24C40 32.84 32.84 40 24 40" stroke-width="2.5" stroke-linecap="round"/>
+                <path class="logo-sprout fill-carrot-400" d="M25 28C27 24 31 23.5 33 24.5C33 24.5 31.5 28.5 27.5 29C25.5 29.25 25 28 25 28Z" />
+                <path class="logo-sprout fill-brand-600 dark:fill-brand-400" d="M22.5 31C22.5 31 23.5 21 16.5 17.5C15 20.5 16.5 27 22.5 31Z" />
+                <path class="logo-sprout stroke-brand-500 dark:stroke-brand-300" d="M23 32.5C23 32.5 23.5 25.5 27 21" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="27" cy="21" r="2.5" class="logo-sprout fill-carrot-400" />
+              </svg>
+              <div class="flex flex-col leading-none text-left rtl:text-right">
+                <span class="font-outfit font-extrabold text-lg tracking-tight bg-gradient-to-r from-brand-600 via-brand-500 to-carrot-400 bg-clip-text text-transparent dark:from-brand-400 dark:via-brand-300 dark:to-carrot-300">
+                  SproutSub
+                </span>
+                <span class="text-[8px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mt-0.5">
+                  Organic Box Subscription
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <h2 class="font-outfit text-lg font-extrabold text-slate-900 dark:text-white">Create Account</h2>
+          <p class="text-[11px] text-slate-400 leading-normal">Sign up for SproutSub weekly organic grocery subscriptions.</p>
+          
+          <div class="space-y-2 pt-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label for="reg-name" class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Full Name</label>
+                <input type="text" id="reg-name" placeholder="John Doe" required class="w-full p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-200 text-xs outline-none focus:border-brand-500 transition-all">
+              </div>
+              <div class="space-y-1">
+                <label for="reg-email" class="block text-[9px] font-bold text-slate-455 uppercase tracking-wider">Email Address</label>
+                <input type="email" id="reg-email" placeholder="name@example.com" required class="w-full p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-200 text-xs outline-none focus:border-brand-500 transition-all">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1 relative">
+                <label for="reg-password" class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Password</label>
+                <div class="relative">
+                  <input type="password" id="reg-password" placeholder="••••••••" required class="w-full p-2 pr-10 rtl:pr-3 rtl:pl-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-200 text-xs outline-none focus:border-brand-500 transition-all">
+                  <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-3 rtl:right-auto rtl:left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none" aria-label="Toggle password visibility">
+                    <i class="fa-solid fa-eye text-xs"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="space-y-1">
+                <label for="reg-box" class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Crate Size</label>
+                <select id="reg-box" class="w-full p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] text-slate-700 dark:text-slate-200 text-xs outline-none focus:border-brand-500">
+                  <option value="veg">Vegetable Box ($29.99)</option>
+                  <option value="fruit">Fruit Box ($24.99)</option>
+                  <option value="family">Family Box ($59.99)</option>
+                  <option value="premium">Premium Box ($69.99)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <label class="flex items-start gap-2 cursor-pointer select-none text-[10px] text-slate-500 pt-0.5 leading-relaxed">
+            <input type="checkbox" required class="mt-0.5 rounded border-slate-300 dark:border-slate-700 text-brand-500 focus:ring-brand-500 bg-transparent">
+            <span>I agree to the SproutSub Terms of Service, Privacy Policies, and weekly routing schedules.</span>
+          </label>
+
+          <div class="pt-1">
+            <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+              Create My Account
+            </button>
+          </div>
+
+          <!-- Divider -->
+          <div class="relative flex py-1 items-center">
+            <div class="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
+            <span class="flex-shrink mx-4 text-slate-400 text-[10px] uppercase font-bold tracking-wider">Or continue with</span>
+            <div class="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
+          </div>
+
+          <!-- Social Button Row -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+            <button type="button" onclick="handleSocialAuth('Google')" class="flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] hover:bg-slate-50 dark:hover:bg-[#151c2e] text-slate-700 dark:text-slate-300 transition-all focus:outline-none">
+              <i class="fa-brands fa-google text-sm text-[#ea4335]"></i>
+              <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Google</span>
+            </button>
+            <button type="button" onclick="handleSocialAuth('Facebook')" class="flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] hover:bg-slate-50 dark:hover:bg-[#151c2e] text-slate-700 dark:text-slate-300 transition-all focus:outline-none">
+              <i class="fa-brands fa-facebook-f text-sm text-[#1877f2]"></i>
+              <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Facebook</span>
+            </button>
+            <button type="button" onclick="handleSocialAuth('Apple')" class="flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] hover:bg-slate-50 dark:hover:bg-[#151c2e] text-slate-700 dark:text-slate-300 transition-all focus:outline-none">
+              <i class="fa-brands fa-apple text-sm text-slate-900 dark:text-white"></i>
+              <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Apple</span>
+            </button>
+          </div>
+
+          <!-- Bottom link -->
+          <div class="text-center pt-2 border-t border-slate-100 dark:border-slate-800/60 mt-2 text-[11px] text-slate-500">
+            <span>Already have an account?</span>
+            <a href="login.html" class="text-brand-500 hover:underline font-bold ml-1">Sign In</a>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Visual panel with illustration -->
+      <div class="relative hidden md:block bg-slate-900 overflow-hidden">
+        <img src="images/login_hero.jpg" alt="Organized rustic organic grocery subscription boxes visual background" class="absolute inset-0 w-full h-full object-cover opacity-80 scale-105 hover:scale-100 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-900/10"></div>
+        <div class="absolute bottom-10 left-10 right-10 p-6 bg-slate-900/40 backdrop-blur-md rounded-2xl border border-slate-500/25 text-left text-white space-y-2">
+          <span class="text-[9px] font-bold text-carrot-400 uppercase tracking-widest">Harvested weekly</span>
+          <h3 class="font-outfit font-extrabold text-lg">Taste Sourced Organic Goodness</h3>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            "We check and compile every grocery carrier to verify fresh delivery conditions straight to your doorstep cycles."
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <!-- ==================== MAIN WORKSPACE END ==================== -->
+
+  <!-- ==================== VANILLA JAVASCRIPT STATE CONTROLLERS ==================== -->
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+      
+      // ==================== 1. DARK MODE HANDLER ====================
+      const htmlEl = document.documentElement;
+      const themeToggleBtn = document.getElementById("theme-toggle");
+
+      const isDarkCached = localStorage.getItem("color-theme") === "dark" || 
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      
+      if (isDarkCached) {
+        htmlEl.classList.add("dark");
+      } else {
+        htmlEl.classList.remove("dark");
+      }
+
+      function toggleDarkMode() {
+        if (htmlEl.classList.contains("dark")) {
+          htmlEl.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          htmlEl.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      }
+
+      if (themeToggleBtn) themeToggleBtn.addEventListener("click", toggleDarkMode);
+
+
+      // ==================== 2. RIGHT TO LEFT (RTL) HANDLER ====================
+      const rtlToggleBtn = document.getElementById("rtl-toggle");
+
+      const isRtlCached = localStorage.getItem("direction") === "rtl";
+      if (isRtlCached) {
+        htmlEl.setAttribute("dir", "rtl");
+      } else {
+        htmlEl.setAttribute("dir", "ltr");
+      }
+
+      function toggleRTL() {
+        const isRTL = htmlEl.getAttribute("dir") === "rtl";
+        if (isRTL) {
+          htmlEl.setAttribute("dir", "ltr");
+          localStorage.setItem("direction", "ltr");
+        } else {
+          htmlEl.setAttribute("dir", "rtl");
+          localStorage.setItem("direction", "rtl");
+        }
+      }
+
+      if (rtlToggleBtn) rtlToggleBtn.addEventListener("click", toggleRTL);
+    });
+
+    // ==================== 5. PASSWORD VISIBILITY TOGGLER ====================
+    function togglePasswordVisibility(fieldId, buttonEl) {
+      const field = document.getElementById(fieldId);
+      const icon = buttonEl.querySelector("i");
+      
+      if (field.type === "password") {
+        field.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        field.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+
+    // ==================== 6. SIMULATED AUTHORIZATION ROUTING ====================
+    function handleAuth(event) {
+      event.preventDefault();
+      alert("Registration Successful! Welcome to SproutSub. Redirecting securely to your User Dashboard...");
+      window.location.href = "user-dashboard.html";
+    }
+
+    // ==================== 7. SIMULATED SOCIAL LOGIN CONTROLLER ====================
+    function handleSocialAuth(provider) {
+      alert(`Connecting to ${provider} authentication servers...`);
+      alert("Social Authentication Successful! Redirecting securely to your User Dashboard...");
+      window.location.href = "user-dashboard.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>SproutSub - Subscriber Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons for UI elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Master Responsive Stylesheet -->
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <script>
+    // Tailwind Config Customization
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#10b981', // Emerald primary
+              600: '#059669', // Darker emerald
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            carrot: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdbb74',
+              400: '#f97316', // Orange secondary
+              500: '#ea580c',
+              600: '#ca8a04',
+            },
+            portalBg: {
+              light: '#fcfdfc',
+              dark: '#090d16',
+            },
+            portalCard: {
+              light: '#ffffff',
+              dark: '#1e293b',
+            },
+            portalInput: {
+              light: '#f8fafc',
+              dark: '#0f172a',
+            }
+          },
+        }
+      }
+    }
+  </script>
+  <style type="text/css">
+    /* ==================== CORE RESPONSIVE ARCHITECTURE & RESET ==================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    html {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      min-width: 320px;
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.4s ease, color 0.3s ease;
+    }
+
+    /* Guaranteed Sticky Header Navigation */
+    header, .sticky-navbar {
+      position: -webkit-sticky !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 50 !important;
+      width: 100% !important;
+      overflow: visible !important;
+    }
+
+    /* Prevent Media & Visual Out-of-Bounds */
+    img, svg, video, canvas, audio, iframe, embed, object {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Section & Container Fluidity */
+    main, section, footer, article, aside {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Content & Text Word Wrapping Containment */
+    p, h1, h2, h3, h4, h5, h6, span, a, li, button, label, input, textarea, blockquote {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+
+    pre, code, kbd {
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: 100%;
+    }
+
+    /* Ensure Tables & Data Grids Scroll Safely on Mobile */
+    .table-responsive, .overflow-x-auto {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      display: block;
+    }
+    table {
+      max-width: 100%;
+    }
+
+    /* Buttons & Interactive Elements Fluid Sizing */
+    button, input, select, textarea, .btn, a.btn-pulse {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #059669;
+    }
+
+    /* Animated Custom Underline Link Effect */
+    .nav-link-custom {
+      position: relative;
+    }
+    .nav-link-custom::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 50%;
+      background-color: #10b981;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(-50%);
+    }
+    .dark .nav-link-custom::after {
+      background-color: #34d399;
+    }
+    .nav-link-custom:hover::after {
+      width: 100%;
+    }
+
+    /* Logo Custom SVG Animations */
+    .logo-group:hover .logo-sprout {
+      animation: sproutScaleWiggle 0.7s ease-in-out infinite alternate;
+      transform-origin: 20px 24px;
+    }
+    .logo-group:hover .logo-loop {
+      animation: loopSpin 2.5s linear infinite;
+      transform-origin: 24px 24px;
+    }
+
+    @keyframes sproutScaleWiggle {
+      0% {
+        transform: rotate(-8deg) scale(0.95);
+      }
+      100% {
+        transform: rotate(12deg) scale(1.15);
+      }
+    }
+
+    @keyframes loopSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Active Sidebar Nav Item styling */
+    .sidebar-active, .admin-sidebar-active {
+      background-color: #10b981 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+    .dark .sidebar-active, .dark .admin-sidebar-active {
+      background-color: #059669 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    }
+
+    /* Dropdown Menus Animations (Desktop) */
+    @media (min-width: 1280px) {
+      .dropdown-menu {
+        opacity: 0;
+        transform: translateY(12px) scale(0.95);
+        visibility: hidden;
+        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+      }
+      .dropdown-group:hover .dropdown-menu {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        visibility: visible;
+      }
+    }
+
+    /* Login Button Pulsing Ripple */
+    .btn-pulse {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-pulse::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease-out, height 0.6s ease-out;
+    }
+    .btn-pulse:hover::before {
+      width: 250%;
+      height: 250%;
+    }
+
+    /* RTL Dynamic Transformations & Symmetry */
+    [dir="rtl"] .rtl-flip {
+      transform: scaleX(-1) !important;
+    }
+    [dir="rtl"] i[class*="fa-arrow-left"],
+    [dir="rtl"] i[class*="fa-arrow-right"],
+    [dir="rtl"] i[class*="fa-chevron-left"],
+    [dir="rtl"] i[class*="fa-chevron-right"],
+    [dir="rtl"] i[class*="fa-right-to-bracket"],
+    [dir="rtl"] i[class*="fa-right-from-bracket"] {
+      transform: scaleX(-1);
+    }
+
+    /* Mobile Side Menu Transition */
+    .mobile-menu-drawer {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ==================== CLEAN RESPONSIVE BREAKPOINT SYSTEM ==================== */
+    
+    /* 1. Large Tablets & Small Laptops (max-width: 1024px) */
+    @media screen and (max-width: 1024px) {
+      .hero-title {
+        font-size: clamp(2rem, 4.5vw, 3rem);
+        line-height: 1.15;
+      }
+      .section-heading {
+        font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+        line-height: 1.2;
+      }
+      .section-py {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+      }
+    }
+
+    /* 2. Tablets & Medium Screens (max-width: 768px) */
+    @media screen and (max-width: 768px) {
+      .hero-title {
+        font-size: clamp(1.75rem, 5.5vw, 2.25rem);
+        line-height: 1.18;
+      }
+      .section-heading {
+        font-size: clamp(1.4rem, 4.5vw, 1.85rem);
+        line-height: 1.25;
+      }
+      .section-py {
+        padding-top: 2.75rem;
+        padding-bottom: 2.75rem;
+      }
+      .responsive-stack-md {
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .responsive-grid-md {
+        grid-template-columns: 1fr !important;
+      }
+      .card-pad-md {
+        padding: 1.25rem !important;
+      }
+    }
+
+    /* 3. Small & Medium Mobile Phones (max-width: 480px) */
+    @media screen and (max-width: 480px) {
+      .hero-title {
+        font-size: clamp(1.5rem, 7vw, 1.85rem) !important;
+        line-height: 1.22 !important;
+      }
+      .hero-subtitle {
+        font-size: 0.9rem !important;
+        line-height: 1.45 !important;
+      }
+      .section-heading {
+        font-size: clamp(1.25rem, 6vw, 1.5rem) !important;
+        line-height: 1.25 !important;
+      }
+      .section-py {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+      }
+      .hero-btn-group, .cta-group, .btn-group-mobile {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0.75rem !important;
+      }
+      .hero-btn-group a, .hero-btn-group button,
+      .cta-group a, .cta-group button,
+      .btn-group-mobile a, .btn-group-mobile button {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+      .card-compact {
+        padding: 1rem !important;
+      }
+      .gap-responsive {
+        gap: 0.875rem !important;
+      }
+      .mobile-hide-decor {
+        display: none !important;
+      }
+      .mobile-full-width {
+        width: 100% !important;
+      }
+      .floating-badge-mobile {
+        position: static !important;
+        margin-top: 0.75rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        transform: none !important;
+      }
+      .bg-blob-decor {
+        width: 260px !important;
+        height: 260px !important;
+        max-width: 90vw !important;
+        max-height: 90vw !important;
+      }
+    }
+
+    /* 4. Extra Small Phones (max-width: 320px) */
+    @media screen and (max-width: 320px) {
+      html, body {
+        font-size: 14px;
+      }
+      .hero-title {
+        font-size: 1.35rem !important;
+        line-height: 1.2 !important;
+      }
+      .section-heading {
+        font-size: 1.18rem !important;
+        line-height: 1.25 !important;
+      }
+      .px-4, .sm\:px-6, .lg\:px-8 {
+        padding-left: 0.625rem !important;
+        padding-right: 0.625rem !important;
+      }
+      .logo-group svg {
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+      }
+      .logo-group span:first-of-type {
+        font-size: 1.1rem !important;
+      }
+      .btn, button, a.btn-pulse {
+        font-size: 0.8125rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+      .card-ultra-compact {
+        padding: 0.75rem !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-portalBg-light text-slate-800 dark:bg-portalBg-dark dark:text-slate-100 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- ==================== TOP NAVIGATION HEADER ==================== -->
+  <header class="sticky top-0 z-50 w-full bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 py-3.5 px-4 sm:px-6 lg:px-8 transition-colors duration-350">
+    <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 focus:outline-none" aria-label="SproutSub Home">
+        <svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 6C14.0589 6 6 14.0589 6 24C6 27.6 7.05 31 8.85 33.85L5 37.7L9.3 37.7L11.55 35.45C14.85 39.55 19.1 42 24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6Z" class="stroke-brand-500 dark:stroke-brand-400" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 10; 4 2"/>
+          <path d="M38 16.5C39.3 18.75 40 21.3 40 24C40 32.84 32.84 40 24 40" class="stroke-carrot-400" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M25 28C27 24 31 23.5 33 24.5C33 24.5 31.5 28.5 27.5 29C25.5 29.25 25 28 25 28Z" class="fill-carrot-400" />
+          <path d="M22.5 31C22.5 31 23.5 21 16.5 17.5C15 20.5 16.5 27 22.5 31Z" class="fill-brand-600 dark:fill-brand-400" />
+          <path d="M23 32.5C23 32.5 23.5 25.5 27 21" class="stroke-brand-500 dark:stroke-brand-300" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="27" cy="21" r="2.5" class="fill-carrot-400" />
+        </svg>
+        <div class="flex flex-col leading-none text-left rtl:text-right">
+          <span class="font-outfit font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
+            SproutSub
+          </span>
+          <span class="text-[8px] font-bold tracking-widest text-slate-400 uppercase">
+            Organic Box
+          </span>
+        </div>
+      </a>
+      
+      <!-- DESKTOP ACTIONS (Hidden on Mobile & Tablet) -->
+      <div class="hidden lg:flex items-center gap-3">
+        <!-- Dark Mode Toggle Button -->
+        <button id="theme-toggle" class="p-2 w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 flex items-center justify-center transition-all focus:outline-none" aria-label="Toggle dark mode">
+          <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-sm dark:hidden"></i>
+          <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-sm hidden dark:block"></i>
+        </button>
+
+        <!-- RTL Toggle Button -->
+        <button id="rtl-toggle" class="p-2 w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 flex items-center justify-center transition-all focus:outline-none" aria-label="Toggle layout direction">
+          <i class="fa-solid fa-right-left text-xs"></i>
+        </button>
+
+        <!-- Back to Home Button -->
+        <a href="index.html" class="flex items-center gap-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition-all shadow-sm">
+          <i class="fa-solid fa-arrow-left rtl-flip text-[10px]"></i>
+          <span>Back to Home</span>
+        </a>
+        
+        <!-- User profile tag -->
+        <div class="relative dropdown-group">
+          <button class="bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white text-xs font-semibold px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2.5 shadow-sm focus:outline-none group">
+            <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[10px] font-black">JD</span>
+            <span class="hidden sm:inline">John Doe</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300 group-hover:rotate-180 rtl-flip"></i>
+          </button>
+          
+          <!-- Dropdown menu -->
+          <div class="dropdown-menu absolute right-0 rtl:right-auto rtl:left-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl py-2 px-1 z-50">
+            <a href="index.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all">
+              <i class="fa-solid fa-house w-4 text-brand-500"></i>
+              <span>Back to Home</span>
+            </a>
+            <a href="login.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium text-rose-500 hover:bg-rose-50/50 dark:hover:bg-rose-900/10 rounded-xl transition-all">
+              <i class="fa-solid fa-right-from-bracket w-4"></i>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE & TABLET ACTIONS (Visible on Mobile & Tablet) -->
+      <div class="flex lg:hidden items-center gap-2">
+        <!-- Mobile Dark Mode Toggle Button -->
+        <button id="mobile-theme-toggle" class="p-2 w-8 h-8 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center focus:outline-none" aria-label="Toggle dark mode">
+          <i class="fa-solid fa-sun text-xs dark:hidden"></i>
+          <i class="fa-solid fa-moon text-xs hidden dark:block"></i>
+        </button>
+
+        <!-- Mobile RTL Toggle Button -->
+        <button id="mobile-rtl-toggle" class="p-2 w-8 h-8 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center focus:outline-none" aria-label="Toggle RTL layout">
+          <i class="fa-solid fa-right-left text-xs"></i>
+        </button>
+
+        <!-- Hamburger Menu Button -->
+        <button id="mobile-menu-btn" class="p-2 w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 shadow-sm focus:outline-none flex items-center justify-center transition-all" aria-expanded="false" aria-label="Toggle navigation drawer">
+          <i class="fa-solid fa-bars text-sm"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER OUTSIDE HEADER -->
+  <!-- MOBILE & TABLET SLIDE-DOWN DRAWER -->
+  <div id="mobile-menu" class="hidden lg:hidden fixed inset-x-0 top-[64px] sm:top-[72px] bottom-0 w-full h-[calc(100vh-64px)] sm:h-[calc(100vh-72px)] bg-white dark:bg-[#0b0f19] border-b border-slate-200 dark:border-slate-800 shadow-2xl overflow-y-auto z-50 transition-all">
+      <div class="px-4 pt-2 pb-6 flex flex-col justify-between min-h-full space-y-4 text-left rtl:text-right">
+        
+        <!-- Header Quick Action items matching mockup -->
+        <div class="flex items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+          <a href="index.html" class="flex items-center gap-2 py-2 px-4 rounded-full bg-slate-100 dark:bg-[#111a2e] border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-800 transition-all shadow-sm">
+            <i class="fa-solid fa-arrow-left rtl-flip text-xs text-amber-500"></i>
+            <span>Back to Home</span>
+          </a>
+
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center shadow-sm">JD</span>
+            <a href="login.html" class="p-2 rounded-xl bg-rose-500/10 text-rose-500 text-xs font-bold hover:bg-rose-500 hover:text-white transition-all flex items-center gap-1">
+              <i class="fa-solid fa-right-from-bracket text-xs"></i>
+              <span class="hidden sm:inline">Sign Out</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Section 1: Dashboard Workspace Panels -->
+        <div class="space-y-1.5">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400 px-1">User Dashboard Workspace</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+            <button class="mobile-user-tab flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-brand-500 transition-all text-left rtl:text-right" data-panel="profile">
+              <i class="fa-solid fa-user-gear w-4 text-brand-500"></i>
+              <span>My Profile</span>
+            </button>
+            <button class="mobile-user-tab flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-brand-500 transition-all text-left rtl:text-right" data-panel="overview">
+              <i class="fa-solid fa-chart-pie w-4 text-carrot-500"></i>
+              <span>Overview</span>
+            </button>
+            <button class="mobile-user-tab flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-brand-500 transition-all text-left rtl:text-right" data-panel="custombox">
+              <i class="fa-solid fa-basket-shopping w-4 text-brand-500"></i>
+              <span>Build Weekly Box</span>
+            </button>
+            <button class="mobile-user-tab flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-brand-500 transition-all text-left rtl:text-right" data-panel="subscription">
+              <i class="fa-solid fa-arrows-spin w-4 text-carrot-500"></i>
+              <span>My Subscription</span>
+            </button>
+            <button class="mobile-user-tab flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-brand-500 transition-all text-left rtl:text-right" data-panel="schedule">
+              <i class="fa-solid fa-truck-ramp-box w-4 text-brand-500"></i>
+              <span>Delivery & History</span>
+            </button>
+            <button class="mobile-user-tab flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-brand-500 transition-all text-left rtl:text-right" data-panel="billing">
+              <i class="fa-solid fa-receipt w-4 text-carrot-500"></i>
+              <span>Billing & Invoices</span>
+            </button>
+            <button class="mobile-user-tab flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-brand-500 transition-all text-left rtl:text-right sm:col-span-2" data-panel="notifications">
+              <i class="fa-solid fa-bell w-4 text-brand-500"></i>
+              <span>Notifications</span>
+            </button>
+          </div>
+        </div>
+
+
+
+        <!-- Section 3: Theme & Direction Settings -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2">
+          <div class="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800">
+            <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Theme</span>
+            <button onclick="document.getElementById('mobile-theme-toggle').click()" class="p-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs shadow-sm">
+              <i class="fa-solid fa-moon dark:hidden"></i>
+              <i class="fa-solid fa-sun hidden dark:block"></i>
+            </button>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800">
+            <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Layout</span>
+            <button onclick="document.getElementById('mobile-rtl-toggle').click()" class="p-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs shadow-sm">
+              <i class="fa-solid fa-right-left"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  <!-- ==================== TOP NAVIGATION HEADER END ==================== -->
+
+  <!-- ==================== MAIN WORKSPACE ==================== -->
+  <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8 transition-colors duration-350">
+    
+    <!-- LEFT PORTAL SIDEBAR (Hidden on mobile/tablet, visible on desktop) -->
+    <aside class="hidden lg:block lg:w-64 xl:w-68 shrink-0 max-w-md lg:max-w-none mx-auto lg:mx-0">
+      <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800/80 rounded-3xl p-5 shadow-sm sticky top-24 space-y-6">
+        
+        <!-- Portal title & Settings switches -->
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+          <div class="flex items-center gap-2 font-outfit font-black text-xs text-brand-600 dark:text-brand-400 uppercase tracking-widest">
+            <i class="fa-solid fa-user-gear text-brand-500"></i>
+            <span>User Portal</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <!-- Dark Mode Toggle Button -->
+            <button id="theme-toggle" class="p-1.5 w-7 h-7 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:text-brand-500 flex items-center justify-center" aria-label="Toggle dark mode">
+              <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-xs dark:hidden"></i>
+              <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-xs hidden dark:block"></i>
+            </button>
+            <!-- RTL Toggle Button -->
+            <button id="rtl-toggle" class="p-1.5 w-7 h-7 rounded-lg border border-slate-200/50 dark:border-slate-700/50 bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:text-brand-500 flex items-center justify-center" aria-label="Toggle RTL layout">
+              <i class="fa-solid fa-right-left text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar Navigation links (Desktop vertical, mobile horizontal scrolling rail) -->
+        <nav class="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 scroll-smooth snap-x" aria-label="Dashboard navigation">
+          <button class="dashboard-nav-btn sidebar-active flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center" data-panel="profile">
+            <i class="fa-solid fa-user-gear w-4"></i>
+            <span>My Profile</span>
+          </button>
+          <button class="dashboard-nav-btn flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center" data-panel="overview">
+            <i class="fa-solid fa-chart-pie w-4"></i>
+            <span>Overview</span>
+          </button>
+          <button class="dashboard-nav-btn flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center" data-panel="custombox">
+            <i class="fa-solid fa-basket-shopping w-4"></i>
+            <span>Build Weekly Box</span>
+          </button>
+          <button class="dashboard-nav-btn flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center" data-panel="subscription">
+            <i class="fa-solid fa-arrows-spin w-4"></i>
+            <span>My Subscription</span>
+          </button>
+          <button class="dashboard-nav-btn flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center" data-panel="schedule">
+            <i class="fa-solid fa-truck-ramp-box w-4"></i>
+            <span>Delivery & History</span>
+          </button>
+          <button class="dashboard-nav-btn flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center" data-panel="billing">
+            <i class="fa-solid fa-receipt w-4"></i>
+            <span>Billing & Invoices</span>
+          </button>
+          <button class="dashboard-nav-btn flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center" data-panel="notifications">
+            <i class="fa-solid fa-bell w-4"></i>
+            <span>Notifications</span>
+          </button>
+          <a href="login.html" class="flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-bold text-carrot-500 hover:bg-carrot-50 dark:hover:bg-carrot-950/20 rounded-xl w-fit lg:w-full text-left rtl:text-right focus:outline-none shrink-0 snap-center">
+            <i class="fa-solid fa-right-from-bracket w-4"></i>
+            <span>Logout</span>
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- RIGHT CONTENT PORTAL VIEW -->
+    <div class="flex-grow space-y-6 sm:space-y-8 min-w-0">
+
+      <!-- Mobile Quick-Tab Selector (Horizontal Scroll Rail on Mobile & Tablet) -->
+      <div class="lg:hidden -mx-4 px-4 sm:mx-0 sm:px-0 mb-4 overflow-x-auto pb-1" style="-webkit-overflow-scrolling: touch;">
+        <div class="flex items-center gap-2 w-max">
+          <button class="user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-brand-500 text-white shadow-sm transition-all flex items-center gap-1.5" data-panel="profile">
+            <i class="fa-solid fa-user-gear text-xs"></i> <span>Profile</span>
+          </button>
+          <button class="user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-brand-50 transition-all flex items-center gap-1.5" data-panel="overview">
+            <i class="fa-solid fa-chart-pie text-xs text-carrot-500"></i> <span>Overview</span>
+          </button>
+          <button class="user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-brand-50 transition-all flex items-center gap-1.5" data-panel="custombox">
+            <i class="fa-solid fa-basket-shopping text-xs text-brand-500"></i> <span>Build Box</span>
+          </button>
+          <button class="user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-brand-50 transition-all flex items-center gap-1.5" data-panel="subscription">
+            <i class="fa-solid fa-arrows-spin text-xs text-carrot-500"></i> <span>Subscription</span>
+          </button>
+          <button class="user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-brand-50 transition-all flex items-center gap-1.5" data-panel="schedule">
+            <i class="fa-solid fa-truck-ramp-box text-xs text-brand-500"></i> <span>Delivery</span>
+          </button>
+          <button class="user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-brand-50 transition-all flex items-center gap-1.5" data-panel="billing">
+            <i class="fa-solid fa-receipt text-xs text-carrot-500"></i> <span>Billing</span>
+          </button>
+          <button class="user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-brand-50 transition-all flex items-center gap-1.5" data-panel="notifications">
+            <i class="fa-solid fa-bell text-xs text-brand-500"></i> <span>Alerts</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 1: MY PROFILE ==================== -->
+      <section id="panel-profile" class="dashboard-panel space-y-8">
+        
+        <!-- Header area matching mockup -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left rtl:text-right">
+          <div>
+            <h1 class="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">My Profile</h1>
+            <p class="text-xs text-slate-400 mt-1">Manage your contact information, credentials, and gold membership tier.</p>
+          </div>
+          <!-- Status badge matching screenshot status block -->
+          <div class="shrink-0">
+            <span class="px-3.5 py-1.5 bg-brand-500/10 border border-brand-500/30 text-brand-500 font-extrabold rounded-full text-[10px] tracking-wider uppercase">
+              Gold Shield Status
+            </span>
+          </div>
+        </div>
+
+        <!-- 2-Column Mockup Card Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Column 1: Account Details -->
+          <div class="lg:col-span-7 bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6 text-left rtl:text-right">
+            <h3 class="font-outfit text-base font-bold text-slate-900 dark:text-white">Account Details</h3>
+            
+            <form id="profile-info-form" class="space-y-4">
+              <div class="space-y-1.5">
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Full Name</label>
+                <input type="text" value="John Doe" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-200 text-xs outline-none focus:border-brand-500 transition-colors">
+              </div>
+              <div class="space-y-1.5">
+                <label class="block text-[10px] font-bold text-slate-455 uppercase tracking-wider">Email Address</label>
+                <input type="email" value="john.doe@example.com" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-200 text-xs outline-none focus:border-brand-500 transition-colors">
+              </div>
+              <div class="space-y-1.5">
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phone Number</label>
+                <input type="tel" value="+1 (555) 0199" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-[#f8fafc] dark:bg-[#0a0f1d] text-slate-800 dark:text-slate-200 text-xs outline-none focus:border-brand-500 transition-colors">
+              </div>
+              
+              <div class="pt-2">
+                <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-carrot-400 to-carrot-500 hover:scale-[1.02] active:scale-95 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+                  Save Profile Changes
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Column 2: Security & Saved Address details -->
+          <div class="lg:col-span-5 space-y-6">
+            
+            <!-- Security details card mimicking mockup style -->
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6 text-left rtl:text-right">
+              <h3 class="font-outfit text-base font-bold text-slate-900 dark:text-white">Security & MFA</h3>
+              <p class="text-xs text-slate-455 leading-relaxed">Protect your credentials and saved routes with multi-factor authentication.</p>
+              
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-slate-700 dark:text-slate-300 font-medium">Enable Two-Factor Authentication</span>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer" checked>
+                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-["'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-carrot-400"></div>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-slate-700 dark:text-slate-300 font-medium">Require PIN to Edit Custom Box</span>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer">
+                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-["'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-carrot-400"></div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                <button onclick="alert('Change Password request triggered.')" class="w-full py-2.5 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl transition-all">
+                  Change Account Password
+                </button>
+              </div>
+            </div>
+
+            <!-- Profile illustration block -->
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col justify-between gap-4">
+              <img src="images/dashboard_profile.jpg" alt="Friendly portrait scene representing user profile updates" class="w-full h-40 object-cover rounded-2xl">
+              <p class="text-[11px] text-slate-400 leading-relaxed text-left rtl:text-right">
+                Delivery addresses are checked against our packaging depot coordinates to establish localized routing cycles automatically.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== SECTION 2: DASHBOARD OVERVIEW ==================== -->
+      <section id="panel-overview" class="dashboard-panel hidden space-y-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left rtl:text-right">
+          <div>
+            <h1 class="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Dashboard Overview</h1>
+            <p class="text-xs text-slate-400 mt-1">Review your SproutSub summary details and critical cycle countdowns.</p>
+          </div>
+          <div class="shrink-0">
+            <span class="px-3.5 py-1.5 bg-brand-500/10 border border-brand-500/30 text-brand-500 font-extrabold rounded-full text-[10px] tracking-wider uppercase">
+              Subscription Active
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <div class="lg:col-span-7 space-y-6">
+            
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4 text-left rtl:text-right">
+              <h3 class="font-outfit text-base font-bold text-slate-900 dark:text-white">Active Crate Info</h3>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div class="p-4 bg-[#f8fafc] dark:bg-[#0a0f1d] border border-slate-100 dark:border-slate-800/80 rounded-2xl">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold block">Next Delivery Date</span>
+                  <span class="font-outfit font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">Tuesday, Sept 1</span>
+                </div>
+                <div class="p-4 bg-[#f8fafc] dark:bg-[#0a0f1d] border border-slate-100 dark:border-slate-800/80 rounded-2xl">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold block">Current Plan</span>
+                  <span class="font-outfit font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">Family Box ($59.99)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Customization warning bar -->
+            <div class="p-5 bg-carrot-50/50 dark:bg-carrot-950/10 border border-carrot-100 dark:border-carrot-900/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="flex items-center gap-3 text-left rtl:text-right">
+                <span class="text-lg text-carrot-500"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                <div>
+                  <h4 class="font-bold text-xs text-slate-900 dark:text-white">Wednesday Lock Deadline Approaching</h4>
+                  <p class="text-[10px] text-slate-400">You have 2 days left to swap items or customize this week's harvest.</p>
+                </div>
+              </div>
+              <button onclick="switchPanel('custombox')" class="px-4 py-2 bg-carrot-400 hover:bg-carrot-500 text-white text-xs font-bold rounded-xl transition-all shadow-sm">
+                Customize Box
+              </button>
+            </div>
+
+          </div>
+
+          <div class="lg:col-span-5 relative self-stretch">
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm h-full flex flex-col justify-between gap-4">
+              <img src="images/dashboard_overview.jpg" alt="Organized organic grocery box tracking delivery dispatch" class="w-full h-40 object-cover rounded-2xl">
+              <p class="text-[11px] text-slate-400 leading-relaxed text-left rtl:text-right">
+                Your crate includes regional organic harvest crops. Review customized content changes before midnight locks.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== SECTION 3: CUSTOMIZE MY GROCERY BOX ==================== -->
+      <section id="panel-custombox" class="dashboard-panel hidden space-y-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left rtl:text-right">
+          <div>
+            <h1 class="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Build This Week's Box</h1>
+            <p class="text-xs text-slate-400 mt-1">Review contents, swap crops, or adjust quantities before customization deadline lock.</p>
+          </div>
+          <div class="shrink-0">
+            <button onclick="saveBoxChanges()" class="px-5 py-3 bg-gradient-to-r from-carrot-400 to-carrot-500 hover:scale-[1.02] active:scale-95 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+              Save Box Changes
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <div class="lg:col-span-7 space-y-4">
+            
+            <!-- Item Card 1 -->
+            <div class="p-4 bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3 text-left rtl:text-right">
+                <span class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 text-brand-500 flex items-center justify-center text-lg"><i class="fa-solid fa-leaf"></i></span>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200">Organic Baby Spinach</h4>
+                  <span class="text-[10px] text-slate-400">Greens & Roots • 200g</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 shrink-0">
+                <div class="flex items-center gap-3">
+                  <button onclick="updateQty('qty-spinach', -1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center">-</button>
+                  <span id="qty-spinach" class="font-outfit font-black text-sm text-slate-800 dark:text-white">2</span>
+                  <button onclick="updateQty('qty-spinach', 1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center">+</button>
+                </div>
+                <button onclick="swapItem('Organic Baby Spinach')" class="text-xs text-brand-500 hover:underline"><i class="fa-solid fa-arrows-rotate mr-1"></i>Swap</button>
+              </div>
+            </div>
+
+            <!-- Item Card 2 -->
+            <div class="p-4 bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3 text-left rtl:text-right">
+                <span class="w-10 h-10 rounded-xl bg-carrot-50 dark:bg-carrot-900/20 text-carrot-500 flex items-center justify-center text-lg"><i class="fa-solid fa-lemon"></i></span>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200">Fresh Meyer Lemons</h4>
+                  <span class="text-[10px] text-slate-400">Seasonal Fruit • 5 Units</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 shrink-0">
+                <div class="flex items-center gap-3">
+                  <button onclick="updateQty('qty-lemons', -1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center">-</button>
+                  <span id="qty-lemons" class="font-outfit font-black text-sm text-slate-800 dark:text-white">1</span>
+                  <button onclick="updateQty('qty-lemons', 1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center">+</button>
+                </div>
+                <button onclick="swapItem('Fresh Meyer Lemons')" class="text-xs text-brand-500 hover:underline"><i class="fa-solid fa-arrows-rotate mr-1"></i>Swap</button>
+              </div>
+            </div>
+
+            <!-- Item Card 3 -->
+            <div class="p-4 bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3 text-left rtl:text-right">
+                <span class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 text-brand-500 flex items-center justify-center text-lg"><i class="fa-solid fa-apple-whole"></i></span>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200">Gala Apples</h4>
+                  <span class="text-[10px] text-slate-400">Orchard Fruit • 4 Units</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 shrink-0">
+                <div class="flex items-center gap-3">
+                  <button onclick="updateQty('qty-apples', -1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center">-</button>
+                  <span id="qty-apples" class="font-outfit font-black text-sm text-slate-800 dark:text-white">1</span>
+                  <button onclick="updateQty('qty-apples', 1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center">+</button>
+                </div>
+                <button onclick="swapItem('Gala Apples')" class="text-xs text-brand-500 hover:underline"><i class="fa-solid fa-arrows-rotate mr-1"></i>Swap</button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="lg:col-span-5 relative self-stretch">
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm h-full flex flex-col justify-between gap-4">
+              <img src="images/dashboard_custom_box.jpg" alt="Organic items display being sorted for custom delivery" class="w-full h-40 object-cover rounded-2xl">
+              <p class="text-[11px] text-slate-400 leading-relaxed text-left rtl:text-right">
+                Customizing crates allows you to choose local organic harvests. Standard weights and allocations modify on saving.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== SECTION 4: MY SUBSCRIPTION ==================== -->
+      <section id="panel-subscription" class="dashboard-panel hidden space-y-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left rtl:text-right">
+          <div>
+            <h1 class="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">My Subscription</h1>
+            <p class="text-xs text-slate-400 mt-1">Review subscription pricing, switch delivery frequencies, or cancel/pause accounts.</p>
+          </div>
+          <div class="shrink-0">
+            <span class="px-3.5 py-1.5 bg-brand-500/10 border border-brand-500/30 text-brand-500 font-extrabold rounded-full text-[10px] tracking-wider uppercase">
+              Family Crate Plan
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div class="lg:col-span-7 space-y-6">
+            
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4 text-left rtl:text-right">
+              <h3 class="font-outfit text-base font-bold text-slate-900 dark:text-white">Subscription Details</h3>
+              
+              <div class="space-y-3 text-xs">
+                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800/60">
+                  <span class="text-slate-400 font-medium">Selected Crate:</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-200">Family Grocery Box</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800/60">
+                  <span class="text-slate-400 font-medium">Delivery Cycle:</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-200">Weekly Delivery</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800/60">
+                  <span class="text-slate-400 font-medium">Subscription Price:</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-200">$59.99 / Cycle</span>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                  <span class="text-slate-400 font-medium">Active Start Date:</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-200">August 12, 2026</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+              <button onclick="openPlanSelector()" class="px-5 py-3 bg-gradient-to-r from-carrot-400 to-carrot-500 hover:scale-[1.02] active:scale-95 text-white text-xs font-bold rounded-xl shadow-md transition-all">
+                Change Crate Plan
+              </button>
+              <button onclick="pauseSubscription()" class="px-5 py-3 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl transition-all">
+                Pause Subscription
+              </button>
+              <button onclick="confirmCancel()" class="px-5 py-3 bg-carrot-100 hover:bg-carrot-200 text-carrot-600 text-xs font-bold rounded-xl transition-all">
+                Cancel Subscription
+              </button>
+            </div>
+
+          </div>
+
+          <div class="lg:col-span-5 relative self-stretch">
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm h-full flex flex-col justify-between gap-4">
+              <img src="images/dashboard_subscription.jpg" alt="Rustic organic box container denoting plan volume sizing" class="w-full h-40 object-cover rounded-2xl">
+              <p class="text-[11px] text-slate-400 leading-relaxed text-left rtl:text-right">
+                Upgrades apply instantly to the current delivery route, while pauses delay routing loops without altering default locations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== SECTION 5: DELIVERY SCHEDULE & ORDER HISTORY ==================== -->
+      <section id="panel-schedule" class="dashboard-panel hidden space-y-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left rtl:text-right">
+          <div>
+            <h1 class="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Delivery & History</h1>
+            <p class="text-xs text-slate-400 mt-1">Track current deliveries, review upcoming weeks, or browse delivery history logs.</p>
+          </div>
+          <div class="shrink-0">
+            <span class="px-3.5 py-1.5 bg-brand-500/10 border border-brand-500/30 text-brand-500 font-extrabold rounded-full text-[10px] tracking-wider uppercase">
+              Weekly Route
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Delivery progress timeline -->
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-6 text-left rtl:text-right">
+              <h3 class="font-outfit text-base font-bold text-slate-900 dark:text-white">Current Order Tracking</h3>
+              
+              <div class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-full bg-brand-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+                  <div class="flex flex-col text-left rtl:text-right">
+                    <span class="font-bold text-xs text-slate-800 dark:text-slate-200">Scheduled</span>
+                    <span class="text-[9px] text-slate-400">Confirmed Tuesday</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-full bg-brand-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+                  <div class="flex flex-col text-left rtl:text-right">
+                    <span class="font-bold text-xs text-slate-800 dark:text-slate-200">Preparing</span>
+                    <span class="text-[9px] text-slate-400">Harvested from fields</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs">3</span>
+                  <div class="flex flex-col text-left rtl:text-right">
+                    <span class="font-bold text-xs text-slate-400">Out for Route</span>
+                    <span class="text-[9px] text-slate-400">Pending dispatch</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Delivery schedule timeline / history table -->
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
+              <div class="p-6 border-b border-slate-100 dark:border-slate-800/80 text-left rtl:text-right">
+                <h3 class="font-outfit text-base font-bold text-slate-900 dark:text-white">Crate Delivery History</h3>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left rtl:text-right text-xs">
+                  <thead class="bg-slate-50 dark:bg-slate-800/40 text-slate-400 uppercase font-bold">
+                    <tr>
+                      <th class="p-4">Delivery Date</th>
+                      <th class="p-4">Crate Plan</th>
+                      <th class="p-4">Route Status</th>
+                      <th class="p-4">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-600 dark:text-slate-300">
+                    <tr>
+                      <td class="p-4 font-semibold">August 25, 2026</td>
+                      <td class="p-4">Family Box</td>
+                      <td class="p-4"><span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-950/20 text-brand-500 rounded font-bold text-[10px]">Delivered</span></td>
+                      <td class="p-4"><button class="text-brand-500 hover:underline">Track Details</button></td>
+                    </tr>
+                    <tr>
+                      <td class="p-4 font-semibold">August 18, 2026</td>
+                      <td class="p-4">Family Box</td>
+                      <td class="p-4"><span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-950/20 text-brand-500 rounded font-bold text-[10px]">Delivered</span></td>
+                      <td class="p-4"><button class="text-brand-500 hover:underline">Track Details</button></td>
+                    </tr>
+                    <tr>
+                      <td class="p-4 font-semibold">August 11, 2026</td>
+                      <td class="p-4 font-normal italic">Paused Cycle</td>
+                      <td class="p-4"><span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded font-bold text-[10px]">Skipped</span></td>
+                      <td class="p-4"><span class="text-slate-400">-</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="lg:col-span-5 relative self-stretch">
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm h-full flex flex-col justify-between gap-4">
+              <img src="images/dashboard_delivery.jpg" alt="A home doorstep organic box package signifying delivery schedules" class="w-full h-40 object-cover rounded-2xl">
+              <p class="text-[11px] text-slate-400 leading-relaxed text-left rtl:text-right">
+                Thermal carriers preserve dropoff quality during hot afternoons. Returns boxes for recycling on next cycle drops.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== SECTION 6: BILLING & INVOICES ==================== -->
+      <section id="panel-billing" class="dashboard-panel hidden space-y-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left rtl:text-right">
+          <div>
+            <h1 class="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Billing & Invoices</h1>
+            <p class="text-xs text-slate-400 mt-1">Verify past payments, update default card details, or download invoice sheets.</p>
+          </div>
+          <div class="shrink-0">
+            <span class="px-3.5 py-1.5 bg-brand-500/10 border border-brand-500/30 text-brand-500 font-extrabold rounded-full text-[10px] tracking-wider uppercase">
+              Billing Synchronized
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div class="lg:col-span-7 space-y-6">
+            
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-4 text-left rtl:text-right">
+              <h3 class="font-outfit text-base font-bold text-slate-900 dark:text-white">Payment Method</h3>
+              <div class="flex items-center justify-between gap-4 p-4 bg-[#f8fafc] dark:bg-[#0a0f1d] border border-slate-100 dark:border-slate-800 rounded-2xl">
+                <div class="flex items-center gap-3">
+                  <span class="text-xl text-slate-500"><i class="fa-solid fa-credit-card"></i></span>
+                  <div class="flex flex-col text-left rtl:text-right">
+                    <span class="font-bold text-xs text-slate-800 dark:text-white">Visa ending in •••• 4242</span>
+                    <span class="text-[9px] text-slate-400">Expires 12 / 2028</span>
+                  </div>
+                </div>
+                <button class="text-xs text-brand-500 hover:underline font-bold">Edit</button>
+              </div>
+            </div>
+
+            <!-- Invoices table -->
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
+              <div class="p-6 border-b border-slate-100 dark:border-slate-800/80 text-left rtl:text-right">
+                <h3 class="font-outfit text-base font-bold text-slate-950 dark:text-white">Invoice Records</h3>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left rtl:text-right text-xs">
+                  <thead class="bg-slate-50 dark:bg-slate-800/40 text-slate-400 uppercase font-bold">
+                    <tr>
+                      <th class="p-4">Billing Date</th>
+                      <th class="p-4">Plan Amount</th>
+                      <th class="p-4">Payment Status</th>
+                      <th class="p-4">Invoices</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-600 dark:text-slate-300">
+                    <tr>
+                      <td class="p-4 font-semibold">August 26, 2026</td>
+                      <td class="p-4 font-bold">$59.99</td>
+                      <td class="p-4"><span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-950/20 text-brand-500 rounded font-bold text-[10px]">Paid</span></td>
+                      <td class="p-4"><button onclick="simulateInvoiceDownload('INV-2026-0826')" class="text-brand-500 hover:underline"><i class="fa-solid fa-download mr-1"></i>PDF</button></td>
+                    </tr>
+                    <tr>
+                      <td class="p-4 font-semibold">August 19, 2026</td>
+                      <td class="p-4 font-bold">$59.99</td>
+                      <td class="p-4"><span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-950/20 text-brand-500 rounded font-bold text-[10px]">Paid</span></td>
+                      <td class="p-4"><button onclick="simulateInvoiceDownload('INV-2026-0819')" class="text-brand-500 hover:underline"><i class="fa-solid fa-download mr-1"></i>PDF</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="lg:col-span-5 relative self-stretch">
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm h-full flex flex-col justify-between gap-4">
+              <img src="images/dashboard_billing.jpg" alt="A flat lay of organic items symbolizing digital invoices" class="w-full h-40 object-cover rounded-2xl">
+              <p class="text-[11px] text-slate-455 leading-relaxed text-left rtl:text-right">
+                Payments retry automatically inside 24 hours during credit transaction drops. Skips lock upcoming invoice balances.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== SECTION 7: NOTIFICATIONS & ACTIVITY ==================== -->
+      <section id="panel-notifications" class="dashboard-panel hidden space-y-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left rtl:text-right">
+          <div>
+            <h1 class="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Notifications</h1>
+            <p class="text-xs text-slate-400 mt-1">Track subscription renewal alerts, deadlines, and delivery updates.</p>
+          </div>
+          <div class="shrink-0">
+            <span class="px-3.5 py-1.5 bg-brand-500/10 border border-brand-500/30 text-brand-500 font-extrabold rounded-full text-[10px] tracking-wider uppercase">
+              Inbox Clear
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div class="lg:col-span-7 space-y-4">
+            
+            <!-- Warning notification -->
+            <div class="p-4 bg-portalCard-light dark:bg-portalCard-dark border-l-4 border-carrot-500 rounded-r-2xl border-y border-r border-slate-200 dark:border-slate-800 flex items-start justify-between gap-4 text-left rtl:text-right">
+              <div class="space-y-1">
+                <span class="text-[10px] text-carrot-500 font-extrabold uppercase block">Deadline Warning</span>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">Crate customization locks in 2 days</h4>
+                <p class="text-[11px] text-slate-500">Submit your veggie swaps before Wednesday at midnight.</p>
+              </div>
+              <button class="text-xs text-slate-400 hover:text-slate-600 focus:outline-none"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Confirmation notification -->
+            <div class="p-4 bg-portalCard-light dark:bg-portalCard-dark border-l-4 border-brand-500 rounded-r-2xl border-y border-r border-slate-200 dark:border-slate-800 flex items-start justify-between gap-4 text-left rtl:text-right">
+              <div class="space-y-1">
+                <span class="text-[10px] text-brand-500 font-extrabold uppercase block">Payment Confirmation</span>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">Billing charge successful</h4>
+                <p class="text-[11px] text-slate-500">Your card was successfully charged $59.99 for weekly invoice INV-2026-0826.</p>
+              </div>
+              <button class="text-xs text-slate-400 hover:text-slate-600 focus:outline-none"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Delivery notification -->
+            <div class="p-4 bg-portalCard-light dark:bg-portalCard-dark border-l-4 border-brand-500 rounded-r-2xl border-y border-r border-slate-200 dark:border-slate-800 flex items-start justify-between gap-4 text-left rtl:text-right">
+              <div class="space-y-1">
+                <span class="text-[10px] text-brand-500 font-extrabold uppercase block">Delivery Confirmation</span>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">Crate delivered to doorstep</h4>
+                <p class="text-[11px] text-slate-500">Your weekly harvest box was successfully delivered on Tuesday, August 25 at 2:15 PM.</p>
+              </div>
+              <button class="text-xs text-slate-400 hover:text-slate-600 focus:outline-none"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+          </div>
+
+          <div class="lg:col-span-5 relative self-stretch">
+            <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm h-full flex flex-col justify-between gap-4">
+              <img src="images/dashboard_notifications.jpg" alt="A calendar schedule representing notification alerts" class="w-full h-40 object-cover rounded-2xl">
+              <p class="text-[11px] text-slate-400 leading-relaxed text-left rtl:text-right">
+                Opt-in SMS notification alerts can be enabled in details layout menus to receive courier tracking cycles in real time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+  <!-- ==================== MAIN WORKSPACE END ==================== -->
+
+  <!-- Spacer to replace footer -->
+  <div class="py-6"></div>
+
+  <!-- ==================== VANILLA JAVASCRIPT STATE CONTROLLERS ==================== -->
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+      
+      // ==================== 1. DARK MODE HANDLER ====================
+      const htmlEl = document.documentElement;
+
+      const isDarkCached = localStorage.getItem("color-theme") === "dark" || 
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      
+      if (isDarkCached) {
+        htmlEl.classList.add("dark");
+      } else {
+        htmlEl.classList.remove("dark");
+      }
+
+      function toggleDarkMode() {
+        if (htmlEl.classList.contains("dark")) {
+          htmlEl.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          htmlEl.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      }
+
+      document.querySelectorAll("#theme-toggle, #mobile-theme-toggle, .theme-toggle-btn").forEach(btn => {
+        btn.addEventListener("click", toggleDarkMode);
+      });
+
+      // ==================== 2. RIGHT TO LEFT (RTL) HANDLER ====================
+      const isRtlCached = localStorage.getItem("direction") === "rtl";
+      if (isRtlCached) {
+        htmlEl.setAttribute("dir", "rtl");
+      } else {
+        htmlEl.setAttribute("dir", "ltr");
+      }
+
+      function toggleRTL() {
+        const isRTL = htmlEl.getAttribute("dir") === "rtl";
+        if (isRTL) {
+          htmlEl.setAttribute("dir", "ltr");
+          localStorage.setItem("direction", "ltr");
+        } else {
+          htmlEl.setAttribute("dir", "rtl");
+          localStorage.setItem("direction", "rtl");
+        }
+      }
+
+      document.querySelectorAll("#rtl-toggle, #mobile-rtl-toggle, .rtl-toggle-btn").forEach(btn => {
+        btn.addEventListener("click", toggleRTL);
+      });
+
+      // ==================== 3. MOBILE DRAWER NAVIGATION ====================
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      function alignMobileMenu() {
+        const header = document.querySelector('header');
+        if (header && mobileMenu) {
+          const bottomPos = Math.round(header.getBoundingClientRect().bottom);
+          mobileMenu.style.top = bottomPos + 'px';
+          mobileMenu.style.height = `calc(100vh - ${bottomPos}px)`;
+        }
+      }
+
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener("click", () => {
+          alignMobileMenu();
+          const isHidden = mobileMenu.classList.toggle("hidden");
+          mobileMenuBtn.setAttribute("aria-expanded", !isHidden);
+          const icon = mobileMenuBtn.querySelector("i");
+          if (icon) {
+            if (!isHidden) {
+              icon.classList.remove("fa-bars");
+              icon.classList.add("fa-xmark");
+            } else {
+              icon.classList.remove("fa-xmark");
+              icon.classList.add("fa-bars");
+            }
+          }
+        });
+
+        window.addEventListener("resize", () => {
+          if (!mobileMenu.classList.contains("hidden")) {
+            alignMobileMenu();
+          }
+        });
+      }
+
+      // Panel Switcher
+      window.switchPanel = function(panelId) {
+        // Hide all panels
+        const panels = document.querySelectorAll(".dashboard-panel");
+        panels.forEach(p => p.classList.add("hidden"));
+
+        // Show selected panel
+        const targetPanel = document.getElementById("panel-" + panelId);
+        if (targetPanel) {
+          targetPanel.classList.remove("hidden");
+        }
+
+        // Update sidebar desktop active classes
+        const desktopButtons = document.querySelectorAll(".dashboard-nav-btn");
+        desktopButtons.forEach(btn => {
+          btn.classList.remove("sidebar-active");
+          btn.classList.add("text-slate-600", "dark:text-slate-300", "hover:bg-slate-50", "dark:hover:bg-slate-800");
+          if (btn.getAttribute("data-panel") === panelId) {
+            btn.classList.add("sidebar-active");
+            btn.classList.remove("text-slate-600", "dark:text-slate-300", "hover:bg-slate-50", "dark:hover:bg-slate-800");
+          }
+        });
+
+        // Update mobile rail tab active classes
+        const mobileTabs = document.querySelectorAll(".user-mobile-tab");
+        mobileTabs.forEach(btn => {
+          if (btn.getAttribute("data-panel") === panelId) {
+            btn.className = "user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-brand-500 text-white shadow-sm transition-all flex items-center gap-1.5";
+          } else {
+            btn.className = "user-mobile-tab shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-brand-50 transition-all flex items-center gap-1.5";
+          }
+        });
+
+        if (mobileMenu) {
+          mobileMenu.classList.add("hidden");
+          if (mobileMenuBtn) {
+            mobileMenuBtn.setAttribute("aria-expanded", "false");
+            const icon = mobileMenuBtn.querySelector("i");
+            if (icon) {
+              icon.classList.remove("fa-xmark");
+              icon.classList.add("fa-bars");
+            }
+          }
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      document.querySelectorAll(".dashboard-nav-btn, .mobile-user-tab, .user-mobile-tab").forEach(btn => {
+        btn.addEventListener("click", function() {
+          const panelId = this.getAttribute("data-panel");
+          if (panelId) {
+            switchPanel(panelId);
+          }
+        });
+      });
+
+      // Default load profile panel
+      switchPanel('profile');
+
+    });
+
+    // ==================== 4. QUANTITY SWAP / ADJUST MOCKS ====================
+    function updateQty(elementId, delta) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        let val = parseInt(el.textContent);
+        val = Math.max(0, val + delta);
+        el.textContent = val;
+      }
+    }
+
+    function swapItem(itemName) {
+      alert(`Swapping '${itemName}' with alternative seasonal organic harvest crop! Selection will update on save.`);
+    }
+
+    function saveBoxChanges() {
+      alert("Crate customization layout saved successfully for Tuesday route!");
+    }
+
+    // ==================== 5. SUBSCRIPTION PLAN CONTROLS ====================
+    function openPlanSelector() {
+      alert("Opening Crate Plan switch guide. You can upgrade or downgrade plan sizing directly.");
+    }
+
+    function pauseSubscription() {
+      const confirmPause = confirm("Are you sure you want to pause your SproutSub subscription deliveries?");
+      if (confirmPause) {
+        alert("Subscription paused successfully. You will not be billed during pauses.");
+      }
+    }
+
+    function confirmCancel() {
+      const confirmCancel = confirm("Are you sure you want to cancel your SproutSub subscription? This action stops all weekly organic deliveries.");
+      if (confirmCancel) {
+        alert("Subscription cancelled successfully. We hope to pack for you again soon!");
+      }
+    }
+
+    // ==================== 6. FINANCIAL INVOICE SIMULATION ====================
+    function simulateInvoiceDownload(invoiceNum) {
+      alert(`Downloading digital invoice ${invoiceNum}.pdf from payment records...`);
+    }
+  </script>
+</body>
+</html>

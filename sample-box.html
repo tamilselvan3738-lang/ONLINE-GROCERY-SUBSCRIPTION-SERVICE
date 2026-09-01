@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>SproutSub - Sample Boxes</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons for UI elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Master Responsive Stylesheet -->
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <script>
+    // Tailwind Config Customization
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#10b981', // Emerald primary
+              600: '#059669', // Darker emerald
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            carrot: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdbb74',
+              400: '#f97316', // Orange secondary
+              500: '#ea580c',
+              600: '#ca8a04', // Amber/orange dark accent
+            },
+            darkbg: {
+              DEFAULT: '#090d16',
+              navbar: '#0f172a',
+              card: '#1e293b',
+            }
+          },
+        }
+      }
+    }
+  </script>
+  <style type="text/css">
+    /* ==================== CORE RESPONSIVE ARCHITECTURE & RESET ==================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    html {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      min-width: 320px;
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.4s ease, color 0.3s ease;
+    }
+
+    /* Guaranteed Sticky Header Navigation */
+    header, .sticky-navbar {
+      position: -webkit-sticky !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 50 !important;
+      width: 100% !important;
+      overflow: visible !important;
+    }
+
+    /* Prevent Media & Visual Out-of-Bounds */
+    img, svg, video, canvas, audio, iframe, embed, object {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Section & Container Fluidity */
+    main, section, footer, article, aside {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Content & Text Word Wrapping Containment */
+    p, h1, h2, h3, h4, h5, h6, span, a, li, button, label, input, textarea, blockquote {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+
+    pre, code, kbd {
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: 100%;
+    }
+
+    /* Ensure Tables & Data Grids Scroll Safely on Mobile */
+    .table-responsive, .overflow-x-auto {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      display: block;
+    }
+    table {
+      max-width: 100%;
+    }
+
+    /* Buttons & Interactive Elements Fluid Sizing */
+    button, input, select, textarea, .btn, a.btn-pulse {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #059669;
+    }
+
+    /* Animated Custom Underline Link Effect */
+    .nav-link-custom {
+      position: relative;
+    }
+    .nav-link-custom::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -6px;
+      left: 50%;
+      background-color: #10b981;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(-50%);
+    }
+    .dark .nav-link-custom::after {
+      background-color: #34d399;
+    }
+    .nav-link-custom:hover::after {
+      width: 100%;
+    }
+
+    /* Logo Custom SVG Animations */
+    .logo-group:hover .logo-sprout {
+      animation: sproutScaleWiggle 0.7s ease-in-out infinite alternate;
+      transform-origin: 20px 24px;
+    }
+    .logo-group:hover .logo-loop {
+      animation: loopSpin 2.5s linear infinite;
+      transform-origin: 24px 24px;
+    }
+
+    @keyframes sproutScaleWiggle {
+      0% {
+        transform: rotate(-8deg) scale(0.95);
+      }
+      100% {
+        transform: rotate(12deg) scale(1.15);
+      }
+    }
+
+    @keyframes loopSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Active Sidebar Nav Item styling */
+    .sidebar-active, .admin-sidebar-active {
+      background-color: #10b981 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+    .dark .sidebar-active, .dark .admin-sidebar-active {
+      background-color: #059669 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    }
+
+    /* Dropdown Menus Animations (Desktop) */
+    @media (min-width: 1280px) {
+      .dropdown-menu {
+        opacity: 0;
+        transform: translateY(12px) scale(0.95);
+        visibility: hidden;
+        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+      }
+      .dropdown-group:hover .dropdown-menu {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        visibility: visible;
+      }
+    }
+
+    /* Login Button Pulsing Ripple */
+    .btn-pulse {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-pulse::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease-out, height 0.6s ease-out;
+    }
+    .btn-pulse:hover::before {
+      width: 250%;
+      height: 250%;
+    }
+
+    /* RTL Dynamic Transformations & Symmetry */
+    [dir="rtl"] .rtl-flip {
+      transform: scaleX(-1) !important;
+    }
+    [dir="rtl"] i[class*="fa-arrow-left"],
+    [dir="rtl"] i[class*="fa-arrow-right"],
+    [dir="rtl"] i[class*="fa-chevron-left"],
+    [dir="rtl"] i[class*="fa-chevron-right"],
+    [dir="rtl"] i[class*="fa-right-to-bracket"],
+    [dir="rtl"] i[class*="fa-right-from-bracket"] {
+      transform: scaleX(-1);
+    }
+
+    /* Mobile Side Menu Transition */
+    .mobile-menu-drawer {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ==================== CLEAN RESPONSIVE BREAKPOINT SYSTEM ==================== */
+    
+    /* 1. Large Tablets & Small Laptops (max-width: 1024px) */
+    @media screen and (max-width: 1024px) {
+      .hero-title {
+        font-size: clamp(2rem, 4.5vw, 3rem);
+        line-height: 1.15;
+      }
+      .section-heading {
+        font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+        line-height: 1.2;
+      }
+      .section-py {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+      }
+    }
+
+    /* 2. Tablets & Medium Screens (max-width: 768px) */
+    @media screen and (max-width: 768px) {
+      .hero-title {
+        font-size: clamp(1.75rem, 5.5vw, 2.25rem);
+        line-height: 1.18;
+      }
+      .section-heading {
+        font-size: clamp(1.4rem, 4.5vw, 1.85rem);
+        line-height: 1.25;
+      }
+      .section-py {
+        padding-top: 2.75rem;
+        padding-bottom: 2.75rem;
+      }
+      .responsive-stack-md {
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .responsive-grid-md {
+        grid-template-columns: 1fr !important;
+      }
+      .card-pad-md {
+        padding: 1.25rem !important;
+      }
+    }
+
+    /* 3. Small & Medium Mobile Phones (max-width: 480px) */
+    @media screen and (max-width: 480px) {
+      .hero-title {
+        font-size: clamp(1.5rem, 7vw, 1.85rem) !important;
+        line-height: 1.22 !important;
+      }
+      .hero-subtitle {
+        font-size: 0.9rem !important;
+        line-height: 1.45 !important;
+      }
+      .section-heading {
+        font-size: clamp(1.25rem, 6vw, 1.5rem) !important;
+        line-height: 1.25 !important;
+      }
+      .section-py {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+      }
+      .hero-btn-group, .cta-group, .btn-group-mobile {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0.75rem !important;
+      }
+      .hero-btn-group a, .hero-btn-group button,
+      .cta-group a, .cta-group button,
+      .btn-group-mobile a, .btn-group-mobile button {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+      .card-compact {
+        padding: 1rem !important;
+      }
+      .gap-responsive {
+        gap: 0.875rem !important;
+      }
+      .mobile-hide-decor {
+        display: none !important;
+      }
+      .mobile-full-width {
+        width: 100% !important;
+      }
+      .floating-badge-mobile {
+        position: static !important;
+        margin-top: 0.75rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        transform: none !important;
+      }
+      .bg-blob-decor {
+        width: 260px !important;
+        height: 260px !important;
+        max-width: 90vw !important;
+        max-height: 90vw !important;
+      }
+    }
+
+    /* 4. Extra Small Phones (max-width: 320px) */
+    @media screen and (max-width: 320px) {
+      html, body {
+        font-size: 14px;
+      }
+      .hero-title {
+        font-size: 1.35rem !important;
+        line-height: 1.2 !important;
+      }
+      .section-heading {
+        font-size: 1.18rem !important;
+        line-height: 1.25 !important;
+      }
+      .px-4, .sm\:px-6, .lg\:px-8 {
+        padding-left: 0.625rem !important;
+        padding-right: 0.625rem !important;
+      }
+      .logo-group svg {
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+      }
+      .logo-group span:first-of-type {
+        font-size: 1.1rem !important;
+      }
+      .btn, button, a.btn-pulse {
+        font-size: 0.8125rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+      .card-ultra-compact {
+        padding: 0.75rem !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#fcfdfc] text-slate-800 dark:bg-darkbg dark:text-slate-100 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- ==================== HEADER & NAVBAR START ==================== -->
+    <header class="sticky top-0 z-50 w-full bg-white/95 dark:bg-darkbg-navbar/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800/80 shadow-sm transition-all duration-300">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between" aria-label="Global">
+      
+      <!-- LEFT SIDE: Unique SVG Logo & Brand -->
+      <div class="flex items-center flex-shrink-0">
+        <a href="index.html" class="logo-group flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1" aria-label="SproutSub Home">
+          <!-- Logo Mark: Creative Grocery subscription loop leaf representation -->
+          <svg class="w-11 h-11" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Subscription loop (Animated outer ring) -->
+            <path class="logo-loop stroke-brand-500 dark:stroke-brand-400" d="M24 6C14.0589 6 6 14.0589 6 24C6 27.6 7.05 31 8.85 33.85L5 37.7L9.3 37.7L11.55 35.45C14.85 39.55 19.1 42 24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6Z" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 10; 4 2"/>
+            <!-- Delivery cycle arrow path inside the loop -->
+            <path class="logo-loop stroke-carrot-400" d="M38 16.5C39.3 18.75 40 21.3 40 24C40 32.84 32.84 40 24 40" stroke-width="2.5" stroke-linecap="round"/>
+            
+            <!-- Growing leaf sprout inside (Animated wiggle) -->
+            <!-- Back leaf stem -->
+            <path class="logo-sprout fill-carrot-400" d="M25 28C27 24 31 23.5 33 24.5C33 24.5 31.5 28.5 27.5 29C25.5 29.25 25 28 25 28Z" />
+            <!-- Main organic green leaf sprout -->
+            <path class="logo-sprout fill-brand-600 dark:fill-brand-400" d="M22.5 31C22.5 31 23.5 21 16.5 17.5C15 20.5 16.5 27 22.5 31Z" />
+            <!-- Center Sprout main stem -->
+            <path class="logo-sprout stroke-brand-500 dark:stroke-brand-300" d="M23 32.5C23 32.5 23.5 25.5 27 21" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Tiny Orange Sprout accent -->
+            <circle cx="27" cy="21" r="2.5" class="logo-sprout fill-carrot-400" />
+          </svg>
+          
+          <!-- Brand Typography -->
+          <div class="flex flex-col leading-none">
+            <span class="font-outfit font-extrabold text-2xl tracking-tight bg-gradient-to-r from-brand-600 via-brand-500 to-carrot-400 bg-clip-text text-transparent dark:from-brand-400 dark:via-brand-300 dark:to-carrot-300">
+              SproutSub
+            </span>
+            <span class="text-[9px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mt-0.5">
+              Organic Box
+            </span>
+          </div>
+        </a>
+      </div>
+
+      <!-- CENTER MENU: Navigation links (Hidden on mobile) -->
+      <div class="hidden xl:flex items-center gap-0.5 xl:gap-1.5">
+        
+        <!-- Home (Dropdown) -->
+        <div class="dropdown-group relative py-2">
+          <a href="index.html" class="flex items-center gap-1.5 px-2.5 py-1.5 text-sm text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 font-semibold transition-colors focus:outline-none group" aria-expanded="false" aria-haspopup="true">
+            <span>Home</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-transform duration-300 group-hover:rotate-180 rtl-flip"></i>
+          </a>
+          
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu absolute top-full left-0 rtl:left-auto rtl:right-0 mt-1 w-48 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-xl py-2 px-1 z-50">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-2.5 text-[14px] text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-brand-50/50 dark:hover:bg-brand-900/20 font-medium rounded-lg transition-all">
+              <span class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+              <span>Home 1</span>
+            </a>
+            <a href="home 2.html" class="flex items-center gap-3 px-4 py-2.5 text-[14px] text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-brand-50/50 dark:hover:bg-brand-900/20 font-medium rounded-lg transition-all">
+              <span class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+              <span>Home 2</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- About -->
+        <a href="about.html" class="nav-link-custom px-2.5 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 transition-colors">About</a>
+
+        <!-- Plans -->
+        <a href="plans.html" class="nav-link-custom px-2.5 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Plans</a>
+
+        <!-- How It Works -->
+        <a href="how-to-works.html" class="nav-link-custom px-2.5 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 transition-colors whitespace-nowrap">How It Works</a>
+
+        <!-- Sample Box -->
+        <a href="sample-box.html" class="nav-link-custom px-2.5 py-1.5 text-sm font-bold text-brand-600 dark:text-brand-400 transition-colors whitespace-nowrap">Sample Box</a>
+
+        <!-- FAQ -->
+        <a href="faq.html" class="nav-link-custom px-2.5 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 transition-colors">FAQ</a>
+
+        <!-- Contact -->
+        <a href="contact.html" class="nav-link-custom px-2.5 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Contact</a>
+
+        <!-- Dashboard (Dropdown) -->
+        <div class="dropdown-group relative py-2">
+          <button class="flex items-center gap-1.5 px-2.5 py-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 transition-colors focus:outline-none group" aria-expanded="false" aria-haspopup="true">
+            <span>Dashboard</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-transform duration-300 group-hover:rotate-180 rtl-flip"></i>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu absolute top-full left-0 rtl:left-auto rtl:right-0 mt-1 w-52 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-xl py-2 px-1 z-50">
+            <a href="admin-dashboard.html" class="flex items-center gap-3 px-4 py-2.5 text-[14px] font-medium text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-brand-50/50 dark:hover:bg-brand-900/20 rounded-lg transition-all">
+              <i class="fa-solid fa-user-shield text-brand-500 w-4"></i>
+              <span>Admin Dashboard</span>
+            </a>
+            <a href="user-dashboard.html" class="flex items-center gap-3 px-4 py-2.5 text-[14px] font-medium text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-brand-50/50 dark:hover:bg-brand-900/20 rounded-lg transition-all">
+              <i class="fa-solid fa-user text-carrot-400 w-4"></i>
+              <span>User Dashboard</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDE: Toggles & Login (Hidden mobile menu, displays standard on desktop) -->
+      <div class="hidden xl:flex items-center gap-2.5 lg:gap-3">
+        
+        <!-- Dark Mode Toggle Button -->
+        <button id="theme-toggle" class="relative p-2 w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-500 flex items-center justify-center overflow-hidden" aria-label="Toggle dark mode">
+          <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-base transition-all duration-500 transform rotate-0 scale-100 dark:rotate-90 dark:scale-0 absolute"></i>
+          <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-base transition-all duration-500 transform rotate-90 scale-0 dark:rotate-0 dark:scale-100 absolute"></i>
+        </button>
+
+        <!-- Right to Left (RTL) Toggle Button -->
+        <button id="rtl-toggle" class="relative p-2 w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-500 flex items-center justify-center overflow-hidden" aria-label="Toggle layout direction" title="Toggle layout direction (LTR/RTL)">
+          <i class="fa-solid fa-right-left text-sm transition-transform duration-300 hover:scale-110"></i>
+        </button>
+
+        <!-- Glowing Login CTA Button -->
+        <a href="login.html" class="btn-pulse relative inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 dark:from-brand-600 dark:to-brand-700 rounded-full shadow-md shadow-brand-500/10 hover:shadow-lg hover:shadow-brand-500/20 hover:scale-[1.03] active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-darkbg">
+          <i class="fa-solid fa-right-to-bracket mr-1.5 rtl:mr-0 rtl:ml-1.5 text-xs"></i>
+          <span>Login</span>
+        </a>
+
+      </div>
+
+      <!-- MOBILE CONTROLS (Hamburger Menu Button Only) -->
+      <div class="flex xl:hidden items-center gap-3">
+        <!-- Hamburger Menu Button -->
+        <button id="mobile-menu-btn" class="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:text-brand-500 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500" aria-expanded="false" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+
+    </nav>
+  </header>
+
+  <!-- MOBILE MENU DRAWER (Zero gap below navbar, controls at end) -->
+  <div class="mobile-menu-drawer hidden xl:hidden fixed inset-x-0 top-[72px] bottom-0 w-full h-[calc(100vh-72px)] bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-2xl overflow-y-auto z-50" id="mobile-menu">
+    <div class="px-4 pt-2 pb-6 flex flex-col justify-between min-h-full space-y-4">
+      
+      <!-- Navigation Links List (Starts directly below navbar with zero gap) -->
+      <div class="space-y-1">
+        <!-- Accordion Item: Home -->
+        <div class="border-b border-slate-100 dark:border-slate-800/60 pb-1">
+          <button class="mobile-accordion-btn w-full flex items-center justify-between py-2 text-base font-semibold text-slate-700 dark:text-slate-200 focus:outline-none">
+            <span>Home</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div class="mobile-accordion-content hidden pl-4 pr-2 pt-1 pb-2 space-y-1">
+            <a href="index.html" class="mobile-nav-close block px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500 font-medium">Home 1</a>
+            <a href="home 2.html" class="mobile-nav-close block px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500 font-medium">Home 2</a>
+          </div>
+        </div>
+
+        <a href="about.html" class="mobile-nav-close block py-2.5 px-3 rounded-lg text-base text-slate-700 dark:text-slate-200 font-semibold hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500">About</a>
+        <a href="plans.html" class="mobile-nav-close block py-2.5 px-3 rounded-lg text-base text-slate-700 dark:text-slate-200 font-semibold hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500">Plans</a>
+        <a href="how-to-works.html" class="mobile-nav-close block py-2.5 px-3 rounded-lg text-base text-slate-700 dark:text-slate-200 font-semibold hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500">How It Works</a>
+        <a href="sample-box.html" class="mobile-nav-close block py-2.5 px-3 rounded-lg text-base text-brand-600 dark:text-brand-400 font-bold bg-brand-50/60 dark:bg-brand-900/20">Sample Box</a>
+        <a href="faq.html" class="mobile-nav-close block py-2.5 px-3 rounded-lg text-base text-slate-700 dark:text-slate-200 font-semibold hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500">FAQ</a>
+        <a href="contact.html" class="mobile-nav-close block py-2.5 px-3 rounded-lg text-base text-slate-700 dark:text-slate-200 font-semibold hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500">Contact</a>
+
+        <!-- Accordion Item: Dashboard -->
+        <div class="border-b border-slate-100 dark:border-slate-800/60 pb-1">
+          <button class="mobile-accordion-btn w-full flex items-center justify-between py-2 text-base font-semibold text-slate-700 dark:text-slate-200 focus:outline-none">
+            <span>Dashboard</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div class="mobile-accordion-content hidden pl-4 pr-2 pt-1 pb-2 space-y-1">
+            <a href="admin-dashboard.html" class="mobile-nav-close block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500">Admin Dashboard</a>
+            <a href="user-dashboard.html" class="mobile-nav-close block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-brand-50 dark:hover:bg-brand-900/10 hover:text-brand-500">User Dashboard</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls Section (Positioned at End) -->
+      <div class="pt-4 mt-auto border-t border-slate-200/60 dark:border-slate-800 space-y-3">
+        <!-- Dark Mode Mobile Toggle -->
+        <div class="flex items-center justify-between py-2.5 px-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-sun text-brand-500 text-sm dark:hidden"></i>
+            <i class="fa-solid fa-moon text-brand-400 text-sm hidden dark:block"></i>
+            <div class="flex flex-col">
+              <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Dark Mode</span>
+              <span class="text-xs text-slate-400">Toggle dark & light theme</span>
+            </div>
+          </div>
+          <button id="mobile-theme-toggle" class="p-2 w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center focus:outline-none" aria-label="Toggle dark mode">
+            <i class="fa-solid fa-sun text-sm dark:block hidden"></i>
+            <i class="fa-solid fa-moon text-sm dark:hidden block"></i>
+          </button>
+        </div>
+
+        <!-- RTL Mobile Toggle -->
+        <div class="flex items-center justify-between py-2.5 px-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-right-left text-brand-500 text-sm"></i>
+            <div class="flex flex-col">
+              <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Right to Left Mode</span>
+              <span class="text-xs text-slate-400">Mirror layout direction</span>
+            </div>
+          </div>
+          <button id="mobile-rtl-toggle" class="p-2 w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center focus:outline-none" aria-label="Toggle RTL mode">
+            <i class="fa-solid fa-right-left text-sm"></i>
+          </button>
+        </div>
+
+        <!-- Login CTA Button -->
+        <a href="login.html" class="mobile-nav-close flex items-center justify-center gap-2 w-full py-3 px-4 text-center font-bold text-white bg-gradient-to-r from-brand-500 to-brand-600 dark:from-brand-600 dark:to-brand-700 rounded-xl shadow-md shadow-brand-500/15 hover:opacity-95 transition-all">
+          <i class="fa-solid fa-right-to-bracket mr-2 rtl:mr-0 rtl:ml-2"></i>
+          Login
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== MAIN WORKSPACE START ==================== -->
+  <main class="flex-grow">
+    
+    <!-- Section 1 – Meet the Boxes -->
+    <section class="py-12 sm:py-16 lg:py-20 lg:py-28 bg-white dark:bg-darkbg overflow-hidden transition-colors duration-350">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          <div class="lg:col-span-7 space-y-6 text-left rtl:text-right">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-900/30 uppercase">
+              <i class="fa-solid fa-box text-sm"></i>
+              <span>Visual Previews</span>
+            </div>
+            <h1 class="font-outfit text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+              Meet Our Weekly <br><span class="bg-gradient-to-r from-brand-600 to-brand-500 bg-clip-text text-transparent dark:from-brand-400 dark:to-brand-300">Organic Crate Options</span>.
+            </h1>
+            <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+              Want a preview of what SproutSub looks like? Explore the typical seasonal layouts of our Vegetable, Fruit, Pantry Staples, Family, and Premium Boxes. 
+            </p>
+            <p class="text-xs text-carrot-600 dark:text-carrot-400 font-semibold italic">
+              * Sample contents shown below are for illustration. Actual selections vary weekly depending on season, field availability, and user preferences.
+            </p>
+          </div>
+
+          <div class="lg:col-span-5 relative">
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-brand-500/10 to-carrot-500/10 blur-lg"></div>
+            <div class="relative bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+              <img src="images/about_organic_box.jpg" alt="Abundant seasonal organic grocery box open display" class="w-full h-[360px] object-cover hover:scale-[1.02] transition-transform duration-500">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 – Vegetable Box -->
+    <section class="py-12 sm:py-16 lg:py-20 bg-slate-50/50 dark:bg-slate-900/40 border-t border-b border-slate-100 dark:border-slate-800/80 transition-colors duration-350">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          <div class="lg:col-span-5 relative">
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-brand-500/10 to-carrot-500/10 blur-lg"></div>
+            <div class="relative bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl">
+              <img src="images/plans_veg_box.jpg" alt="Fresh organic vegetables collection arranged beautifully on table" class="w-full h-[320px] object-cover hover:scale-[1.02] transition-transform duration-500">
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 space-y-6 text-left rtl:text-right">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-900/30 uppercase">
+              <i class="fa-solid fa-carrot text-sm"></i>
+              <span>Ideal for Everyday Cooking</span>
+            </div>
+            <h2 class="font-outfit text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+              The Everyday Cooking Vegetable Box
+            </h2>
+            <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
+              Curated for households cooking at home regularly. Contains robust staples, tender salad greens, aromatic base roots, and seasonal picks that support standard recipe preparation.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 text-xs font-bold text-slate-600 dark:text-slate-300">
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Leafy Greens (Spinach, Kale)</span>
+                <span class="text-brand-500 font-extrabold">2 Bunches</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Roots (Carrots, Red Onion)</span>
+                <span class="text-brand-500 font-extrabold">1.5 kg</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Base Crops (Tomatoes, Peppers)</span>
+                <span class="text-brand-500 font-extrabold">1 kg</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Culinary Herbs (Thyme, Basil)</span>
+                <span class="text-brand-500 font-extrabold">2 Packs</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-400">
+              <strong>Best Suited For:</strong> Meal-prepping couples and cooking enthusiasts seeking fresh organic greens.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 – Fruit Box -->
+    <section class="py-12 sm:py-16 lg:py-20 bg-white dark:bg-darkbg transition-colors duration-350">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          <div class="lg:col-span-7 space-y-6 text-left rtl:text-right">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider text-carrot-600 bg-carrot-50 dark:text-carrot-400 dark:bg-carrot-900/30 uppercase">
+              <i class="fa-solid fa-lemon text-sm"></i>
+              <span>Snacks and Breakfasts</span>
+            </div>
+            <h2 class="font-outfit text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+              The Fresh Orchard Fruit Box
+            </h2>
+            <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
+              Curated for natural snacking, breakfast toppings, and smoothie lovers. Packed with sweet orchard stone fruits, vitamin-rich citrus, and seasonal field berries harvested ripe.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 text-xs font-bold text-slate-600 dark:text-slate-300">
+              <div class="p-3 bg-slate-50/50 dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Morning Citrus (Lemons, Oranges)</span>
+                <span class="text-carrot-500 font-extrabold">6 Units</span>
+              </div>
+              <div class="p-3 bg-slate-50/50 dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Orchard Picks (Apples, Pears)</span>
+                <span class="text-carrot-500 font-extrabold">8 Units</span>
+              </div>
+              <div class="p-3 bg-slate-50/50 dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Sweet Berries (Strawberries, Blueberries)</span>
+                <span class="text-carrot-500 font-extrabold">2 Packs</span>
+              </div>
+              <div class="p-3 bg-slate-50/50 dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Energy Fruit (Bananas, Grapes)</span>
+                <span class="text-carrot-500 font-extrabold">1 kg</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-400">
+              <strong>Best Suited For:</strong> Active families with school-going kids and healthy snack enthusiasts.
+            </p>
+          </div>
+
+          <div class="lg:col-span-5 relative">
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-brand-500/10 to-carrot-500/10 blur-lg"></div>
+            <div class="relative bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl">
+              <img src="images/plans_fruit_box.jpg" alt="Fresh fruits bowl displaying apples, berries, and oranges" class="w-full h-[320px] object-cover hover:scale-[1.02] transition-transform duration-500">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4 – Pantry Staples Box -->
+    <section class="py-12 sm:py-16 lg:py-20 bg-slate-50/50 dark:bg-slate-900/40 border-t border-b border-slate-100 dark:border-slate-800/80 transition-colors duration-350">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          <div class="lg:col-span-5 relative">
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-brand-500/10 to-carrot-500/10 blur-lg"></div>
+            <div class="relative bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl">
+              <img src="images/plans_pantry_box.jpg" alt="Neatly organized glass jars of oats, pasta, and oil on shelf" class="w-full h-[320px] object-cover hover:scale-[1.02] transition-transform duration-500">
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 space-y-6 text-left rtl:text-right">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-900/30 uppercase">
+              <i class="fa-solid fa-jar text-sm"></i>
+              <span>Pantry Stocking staples</span>
+            </div>
+            <h2 class="font-outfit text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+              The Curated Pantry Staples Box
+            </h2>
+            <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
+              Maintains your collection of dry kitchen basics. Never run out of foundational grains, small-batch dry pastas, high-protein nuts, and premium oils.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 text-xs font-bold text-slate-600 dark:text-slate-300">
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Organic Grains (Quinoa, Oats, Rice)</span>
+                <span class="text-brand-500 font-extrabold">3 Jars</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Artisanal Pastas (Penne, Fusilli)</span>
+                <span class="text-brand-500 font-extrabold">2 Packs</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Raw Nuts (Walnuts, Almonds)</span>
+                <span class="text-brand-500 font-extrabold">500 g</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Cold-Pressed Olive Oil</span>
+                <span class="text-brand-500 font-extrabold">500 ml</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-400">
+              <strong>Best Suited For:</strong> Households aiming to bypass dry food supermarkets and maintain an organized pantry.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5 – Family Box vs Premium Box -->
+    <section class="py-12 sm:py-16 lg:py-20 bg-white dark:bg-darkbg transition-colors duration-350">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+          <h2 class="font-outfit text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white">Family Box vs Premium Crate</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Compare our large-volume household boxes next to our specialized, curated gourmet creations.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          
+          <!-- Family Box details -->
+          <div class="bg-slate-50/50 dark:bg-slate-900/40 p-5 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between">
+            <div class="space-y-6">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1">
+                <span class="inline-flex items-center w-fit px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider whitespace-nowrap shrink-0">Family Favorite</span>
+                <span class="text-xs font-bold text-slate-400">High Volume</span>
+              </div>
+              <div class="relative bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden h-[200px]">
+                <img src="images/plans_weekly_box.jpg" alt="A flat lay of fresh weekly family groceries" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-outfit text-2xl font-bold text-slate-900 dark:text-white">The Family Crate</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                Contains larger quantities of everyday vegetables (root crops, greens), citrus fruits, fresh berries, farm-fresh organic milk, and raw eggs. Supports multiple cooking events and breakfast routines.
+              </p>
+            </div>
+          </div>
+
+          <!-- Premium Box details -->
+          <div class="bg-gradient-to-br from-brand-50/20 to-white dark:from-brand-900/10 dark:to-slate-800/20 p-5 sm:p-8 rounded-3xl border border-brand-200 dark:border-brand-800 flex flex-col justify-between shadow-md">
+            <div class="space-y-6">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1">
+                <span class="inline-flex items-center w-fit px-3 py-1 bg-brand-500 text-white rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap shrink-0 shadow-sm">Curated Selection</span>
+                <span class="text-xs font-extrabold text-brand-600 dark:text-brand-400">Artisanal Specialties</span>
+              </div>
+              <div class="relative bg-slate-200 dark:bg-slate-900 rounded-2xl overflow-hidden h-[200px]">
+                <img src="images/plans_prem_box.jpg" alt="Artisanal organic cheese, fresh rosemary, and olive oil gourmet box" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-outfit text-2xl font-bold text-slate-900 dark:text-white">The Premium Crate</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Curated for gourmands. Includes small-batch artisanal cheeses, fresh herbs (rosemary, sage), heritage seasonal apples/figs, freshly baked organic sourdough bread, and estate cold-pressed oils.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6 – What a Typical Week Might Look Like -->
+    <section class="py-12 sm:py-16 lg:py-20 bg-slate-50/50 dark:bg-slate-900/40 border-t border-b border-slate-100 dark:border-slate-800/80 transition-colors duration-350">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+          <h2 class="font-outfit text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white">What a Typical Week Looks Like</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Take a visual walk through our weekly reveal layout. Here is a sample selection of items grouped by categories.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-5xl mx-auto">
+          
+          <!-- Left categories stack -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm flex items-start gap-4">
+              <span class="w-10 h-10 bg-brand-50 dark:bg-brand-900/20 text-brand-500 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-leaf"></i></span>
+              <div>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Fresh Harvest Crops</h4>
+                <p class="text-xs text-slate-400 mt-1">Baby spinach (200g), carrots bunch, red vine tomatoes (1kg), and seasonal citrus (5 units).</p>
+              </div>
+            </div>
+            
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm flex items-start gap-4">
+              <span class="w-10 h-10 bg-brand-50 dark:bg-brand-900/20 text-brand-500 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-cow"></i></span>
+              <div>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Kitchen Dairy & Staples</h4>
+                <p class="text-xs text-slate-400 mt-1">Organic whole milk (1 liter), farm-fresh brown eggs (1 carton / 12 units), and unsalted farm butter (250g).</p>
+              </div>
+            </div>
+
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm flex items-start gap-4">
+              <span class="w-10 h-10 bg-brand-50 dark:bg-brand-900/20 text-brand-500 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-wheat-awn"></i></span>
+              <div>
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Baker & Pantry Selections</h4>
+                <p class="text-xs text-slate-400 mt-1">Freshly baked whole wheat bread loaf, small-batch dry fusilli pasta (500g), and extra virgin olive oil (500ml).</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Open Box showcase image -->
+          <div class="lg:col-span-5 relative">
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-brand-500/10 to-carrot-500/10 blur-lg"></div>
+            <div class="relative bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl">
+              <img src="images/about_grocery_planning.jpg" alt="Fresh ingredients laid out on kitchen table for planning" class="w-full h-[320px] object-cover hover:scale-[1.02] transition-transform duration-500">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7 – Seasonal Items: Nature Changes the Box -->
+    <section class="py-12 sm:py-16 lg:py-20 bg-white dark:bg-darkbg overflow-hidden transition-colors duration-350">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative bg-[#0b101b] text-white rounded-[2.5rem] p-8 sm:p-12 lg:p-16 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          <div class="absolute -right-24 -bottom-24 w-96 h-96 bg-brand-500/10 rounded-full filter blur-3xl"></div>
+          <div class="absolute -left-24 -top-24 w-96 h-96 bg-carrot-500/10 rounded-full filter blur-3xl"></div>
+
+          <!-- Left Text (Col 7) -->
+          <div class="lg:col-span-7 space-y-6 text-left rtl:text-right relative">
+            <h2 class="font-outfit text-xl sm:text-2xl md:text-3xl lg:text-4xl lg:text-5xl font-extrabold leading-tight">
+              Evolving With the Seasons
+            </h2>
+            <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg">
+              Supermarkets store crops in refrigerators for weeks to keep them uniform. SproutSub does the opposite. We align your boxes with seasonal crop cycles to keep your diet healthy, natural, and exciting.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 text-xs font-semibold text-slate-300">
+              <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                <span>Spring: Fresh peas, radishes, baby lettuce</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                <span>Summer: Sweet peaches, corn, heirloom tomatoes</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                <span>Autumn: Apples, pumpkins, sweet potatoes</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                <span>Winter: Crisp kale, citrus, winter squash</span>
+              </div>
+            </div>
+
+            <div class="pt-4">
+              <a href="login.html" class="btn-pulse px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white text-sm font-bold rounded-full transition-all flex items-center gap-2">
+                <span>Discover What's Fresh</span>
+                <i class="fa-solid fa-arrow-right rtl-flip text-xs"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Showcase Image (Col 5) -->
+          <div class="lg:col-span-5 relative">
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-brand-500/20 to-carrot-500/20 blur-lg"></div>
+            <div class="relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+              <img src="images/about_grocery_sourcing.jpg" alt="Fresh green fields showing harvest farm site crops" class="w-full h-[280px] object-cover hover:scale-[1.03] transition-transform duration-500">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <!-- ==================== MAIN CONTENT END ==================== -->
+
+  <!-- ==================== FOOTER START ==================== -->
+  <footer class="bg-[#f3f7f3] dark:bg-darkbg-navbar border-t border-slate-200/50 dark:border-slate-800/80 transition-colors duration-350">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12 text-left rtl:text-right">
+        
+        <!-- Column 1: Brand details -->
+        <div class="space-y-4 lg:col-span-1">
+          <a href="index.html" class="logo-group flex items-center gap-2 mb-4 focus:outline-none" aria-label="SproutSub Footer Logo">
+            <svg class="w-9 h-9" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="logo-loop stroke-brand-500 dark:stroke-brand-400" d="M24 6C14.0589 6 6 14.0589 6 24C6 27.6 7.05 31 8.85 33.85L5 37.7L9.3 37.7L11.55 35.45C14.85 39.55 19.1 42 24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6Z" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 10; 4 2"/>
+              <path class="logo-loop stroke-carrot-400" d="M38 16.5C39.3 18.75 40 21.3 40 24C40 32.84 32.84 40 24 40" stroke-width="2.5" stroke-linecap="round"/>
+              <path class="logo-sprout fill-carrot-400" d="M25 28C27 24 31 23.5 33 24.5C33 24.5 31.5 28.5 27.5 29C25.5 29.25 25 28 25 28Z" />
+              <path class="logo-sprout fill-brand-600 dark:fill-brand-400" d="M22.5 31C22.5 31 23.5 21 16.5 17.5C15 20.5 16.5 27 22.5 31Z" />
+              <path class="logo-sprout stroke-brand-500 dark:stroke-brand-300" d="M23 32.5C23 32.5 23.5 25.5 27 21" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="27" cy="21" r="2.5" class="logo-sprout fill-carrot-400" />
+            </svg>
+            <div class="flex flex-col leading-none">
+              <span class="font-outfit font-extrabold text-xl tracking-tight bg-gradient-to-r from-brand-600 via-brand-500 to-carrot-400 bg-clip-text text-transparent dark:from-brand-400 dark:via-brand-300 dark:to-carrot-300">
+                SproutSub
+              </span>
+              <span class="text-[8px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mt-0.5">
+                Organic Box
+              </span>
+            </div>
+          </a>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
+            Fresh organic grocery subscription boxes harvested from regional organic fields and delivered weekly to your doorstep.
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <a href="#" class="w-9 h-9 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 hover:border-brand-500 hover:scale-110 active:scale-95 transition-all duration-300" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f text-sm"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 hover:border-brand-500 hover:scale-110 active:scale-95 transition-all duration-300" aria-label="Instagram">
+              <i class="fa-brands fa-instagram text-sm"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 hover:border-brand-500 hover:scale-110 active:scale-95 transition-all duration-300" aria-label="Twitter">
+              <i class="fa-brands fa-twitter text-sm"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 hover:border-brand-500 hover:scale-110 active:scale-95 transition-all duration-300" aria-label="Pinterest">
+              <i class="fa-brands fa-pinterest-p text-sm"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Shop Box Subscriptions -->
+        <div>
+          <h3 class="font-outfit text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-4">Shop Boxes</h3>
+          <ul class="space-y-2.5">
+            <li><a href="plans.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Single Box Plan</a></li>
+            <li><a href="plans.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Family Box Plan</a></li>
+            <li><a href="plans.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Feast Box Plan</a></li>
+            <li><a href="#" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Gift Subscriptions</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Resources -->
+        <div>
+          <h3 class="font-outfit text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-4">Resources</h3>
+          <ul class="space-y-2.5">
+            <li><a href="how-to-works.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">How It Works</a></li>
+            <li><a href="sample-box.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Sample Harvest Box</a></li>
+            <li><a href="faq.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">FAQ & Support</a></li>
+            <li><a href="#" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Delivery Areas</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Company details -->
+        <div>
+          <h3 class="font-outfit text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-4">Company</h3>
+          <ul class="space-y-2.5">
+            <li><a href="about.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">About SproutSub</a></li>
+            <li><a href="#" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Organic Living Blog</a></li>
+            <li><a href="#" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200 flex items-center gap-1.5">
+              <span>Careers</span>
+              <span class="px-1.5 py-0.5 rounded text-[9px] font-bold text-brand-600 bg-brand-100 dark:text-brand-400 dark:bg-brand-900/30 uppercase tracking-wide">Hiring</span>
+            </a></li>
+            <li><a href="contact.html" class="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 5: Newsletter form -->
+        <div class="space-y-4 sm:col-span-2 md:col-span-2 lg:col-span-1">
+          <h3 class="font-outfit text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-4">Newsletter</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            Subscribe for seasonal recipes, cooking tips, and exclusive organic discounts.
+          </p>
+          <form class="flex items-center mt-2 max-w-sm rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700 focus-within:border-brand-500 dark:focus-within:border-brand-400 bg-white dark:bg-slate-900 transition-colors duration-300">
+            <input type="email" placeholder="Your email..." class="w-full px-4 py-2 text-sm bg-transparent outline-none text-slate-700 dark:text-slate-200 placeholder-slate-400" required>
+            <button type="submit" class="bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 transition-all flex items-center justify-center" aria-label="Subscribe to newsletter">
+              <i class="fa-solid fa-arrow-right rtl-flip text-sm"></i>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </footer>
+  <!-- ==================== FOOTER END ==================== -->
+
+  <!-- ==================== VANILLA JAVASCRIPT STATE CONTROLLERS ==================== -->
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+      
+      // ==================== 1. DARK MODE HANDLER ====================
+      const htmlEl = document.documentElement;
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const mobileThemeToggleBtn = document.getElementById("mobile-theme-toggle");
+
+      // Check local storage or system preference on load
+      const isDarkCached = localStorage.getItem("color-theme") === "dark" || 
+        (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      
+      if (isDarkCached) {
+        htmlEl.classList.add("dark");
+      } else {
+        htmlEl.classList.remove("dark");
+      }
+
+      function toggleDarkMode() {
+        if (htmlEl.classList.contains("dark")) {
+          htmlEl.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        } else {
+          htmlEl.classList.add("dark");
+          localStorage.setItem("color-theme", "dark");
+        }
+      }
+
+      themeToggleBtn.addEventListener("click", toggleDarkMode);
+      mobileThemeToggleBtn.addEventListener("click", toggleDarkMode);
+
+
+      // ==================== 2. RIGHT TO LEFT (RTL) HANDLER ====================
+      const rtlToggleBtn = document.getElementById("rtl-toggle");
+      const mobileRtlToggleBtn = document.getElementById("mobile-rtl-toggle");
+
+      // Check local storage on load
+      const isRtlCached = localStorage.getItem("direction") === "rtl";
+      if (isRtlCached) {
+        htmlEl.setAttribute("dir", "rtl");
+      } else {
+        htmlEl.setAttribute("dir", "ltr");
+      }
+
+      function toggleRTL() {
+        const isRTL = htmlEl.getAttribute("dir") === "rtl";
+        if (isRTL) {
+          htmlEl.setAttribute("dir", "ltr");
+          localStorage.setItem("direction", "ltr");
+        } else {
+          htmlEl.setAttribute("dir", "rtl");
+          localStorage.setItem("direction", "rtl");
+        }
+      }
+
+      rtlToggleBtn.addEventListener("click", toggleRTL);
+      mobileRtlToggleBtn.addEventListener("click", toggleRTL);
+
+
+      // ==================== 3. MOBILE MENU & ACCORDIONS (ZERO GAP ALIGNMENT) ====================
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      function alignMobileMenu() {
+        const header = document.querySelector('header');
+        if (header && mobileMenu) {
+          const bottomPos = Math.round(header.getBoundingClientRect().bottom);
+          mobileMenu.style.top = bottomPos + 'px';
+          mobileMenu.style.height = `calc(100vh - ${bottomPos}px)`;
+        }
+      }
+
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener("click", function () {
+          alignMobileMenu();
+          const isHidden = mobileMenu.classList.toggle("hidden");
+          mobileMenuBtn.setAttribute("aria-expanded", !isHidden);
+          const icon = mobileMenuBtn.querySelector("i");
+          if (icon) {
+            if (!isHidden) {
+              icon.classList.remove("fa-bars");
+              icon.classList.add("fa-xmark");
+            } else {
+              icon.classList.remove("fa-xmark");
+              icon.classList.add("fa-bars");
+            }
+          }
+        });
+
+        window.addEventListener("resize", function () {
+          if (!mobileMenu.classList.contains("hidden")) {
+            alignMobileMenu();
+          }
+        });
+      }
+
+      // Close mobile menu when links are clicked
+      const mobileCloseLinks = document.querySelectorAll(".mobile-nav-close");
+      mobileCloseLinks.forEach(link => {
+        link.addEventListener("click", function() {
+          if (mobileMenu) {
+            mobileMenu.classList.add("hidden");
+            if (mobileMenuBtn) {
+              mobileMenuBtn.setAttribute("aria-expanded", "false");
+              const icon = mobileMenuBtn.querySelector("i");
+              if (icon) {
+                icon.classList.remove("fa-xmark");
+                icon.classList.add("fa-bars");
+              }
+            }
+          }
+        });
+      });
+
+      // Mobile Menu Accordions (Home & Dashboard toggle behavior)
+      const accordionButtons = document.querySelectorAll(".mobile-accordion-btn");
+      accordionButtons.forEach(btn => {
+        btn.addEventListener("click", function () {
+          const content = this.nextElementSibling;
+          const chevron = this.querySelector("i");
+          if (content) {
+            const isCollapsed = content.classList.contains("hidden");
+            if (isCollapsed) {
+              content.classList.remove("hidden");
+              if (chevron) chevron.classList.add("rotate-180");
+            } else {
+              content.classList.add("hidden");
+              if (chevron) chevron.classList.remove("rotate-180");
+            }
+          }
+        });
+      });
+      
+    });
+  </script>
+</body>
+</html>
