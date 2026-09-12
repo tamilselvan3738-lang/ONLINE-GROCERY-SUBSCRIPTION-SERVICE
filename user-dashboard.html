@@ -199,8 +199,8 @@ table {
 
 /* ==================== 2. NAVIGATION & DROPDOWNS ENGINE ==================== */
 
-/* Guaranteed Sticky Header Navigation */
-header, .sticky-navbar, header.sticky, [class*="sticky"] {
+/* Guaranteed Sticky Header Navigation (Strictly scoped to headers) */
+header, header.sticky, .sticky-navbar, header[class*="sticky"] {
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0 !important;
@@ -540,7 +540,7 @@ header, .sticky-navbar, header.sticky, [class*="sticky"] {
     
     <!-- LEFT PORTAL SIDEBAR (Hidden on mobile/tablet, visible on desktop) -->
     <aside class="hidden lg:block lg:w-64 xl:w-68 shrink-0 max-w-md lg:max-w-none mx-auto lg:mx-0">
-      <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800/80 rounded-3xl p-5 shadow-sm sticky top-24 space-y-6">
+      <div class="bg-portalCard-light dark:bg-portalCard-dark border border-slate-200 dark:border-slate-800/80 rounded-3xl p-5 shadow-sm sticky top-24 space-y-6" style="position: sticky !important; top: 5.5rem !important; z-index: 20 !important;">
         
         <!-- Portal title & Settings switches -->
         <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">

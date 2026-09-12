@@ -192,8 +192,8 @@ table {
 
 /* ==================== 2. NAVIGATION & DROPDOWNS ENGINE ==================== */
 
-/* Guaranteed Sticky Header Navigation */
-header, .sticky-navbar, header.sticky, [class*="sticky"] {
+/* Guaranteed Sticky Header Navigation (Strictly scoped to headers) */
+header, header.sticky, .sticky-navbar, header[class*="sticky"] {
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0 !important;
