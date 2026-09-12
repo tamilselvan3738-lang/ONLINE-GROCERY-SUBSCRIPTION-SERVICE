@@ -413,16 +413,22 @@
 </head>
 <body class="bg-[#fcfdfc] text-slate-800 dark:bg-darkbg dark:text-slate-100 font-sans min-h-screen flex flex-col antialiased">
 
-  <!-- Floating Utilities (Top Right) -->
-  <div class="absolute top-4 right-4 rtl:right-auto rtl:left-4 z-50 flex items-center gap-2">
-    <button id="theme-toggle" class="w-8 h-8 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-center text-slate-605 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none" aria-label="Toggle theme">
-      <i class="fa-solid fa-sun text-xs dark:hidden"></i>
-      <i class="fa-solid fa-moon text-xs hidden dark:block"></i>
-    </button>
-    <button id="rtl-toggle" class="w-8 h-8 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-center text-slate-605 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none" aria-label="Toggle layout direction">
-      <i class="fa-solid fa-right-left text-xs"></i>
-    </button>
-  </div>
+  <!-- Top Utility & Navigation Bar (Ensures zero overlap on mobile/360px) -->
+  <header class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-1 flex items-center justify-between z-20">
+    <a href="index.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors">
+      <i class="fa-solid fa-arrow-left rtl-flip text-[10px]"></i>
+      <span>Back to Home</span>
+    </a>
+    <div class="flex items-center gap-2">
+      <button id="theme-toggle" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 flex items-center justify-center transition-all shadow-xs focus:outline-none" aria-label="Toggle theme">
+        <i class="fa-solid fa-sun text-xs dark:hidden"></i>
+        <i class="fa-solid fa-moon text-xs hidden dark:block"></i>
+      </button>
+      <button id="rtl-toggle" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-brand-500 dark:hover:text-brand-400 flex items-center justify-center transition-all shadow-xs focus:outline-none" aria-label="Toggle layout direction">
+        <i class="fa-solid fa-right-left text-xs"></i>
+      </button>
+    </div>
+  </header>
 
   <!-- ==================== MAIN WORKSPACE ==================== -->
   <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-3 flex flex-col items-center justify-center transition-colors duration-350">
@@ -458,8 +464,8 @@
             </a>
           </div>
 
-          <h2 class="font-outfit text-lg font-extrabold text-slate-900 dark:text-white">Create Account</h2>
-          <p class="text-[11px] text-slate-400 leading-normal">Sign up for SproutSub weekly organic grocery subscriptions.</p>
+          <h2 class="font-outfit text-lg font-extrabold text-slate-900 dark:text-white text-center">Create Account</h2>
+          <p class="text-[11px] text-slate-400 leading-normal text-center">Sign up for SproutSub weekly organic grocery subscriptions.</p>
           
           <div class="space-y-2 pt-1">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
